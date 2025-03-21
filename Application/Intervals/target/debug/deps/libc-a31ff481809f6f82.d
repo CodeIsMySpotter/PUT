@@ -1,9 +1,0 @@
-D:\IT\UNIVERSITY\PUT\Intervals\target\debug\deps\liblibc-a31ff481809f6f82.rmeta: D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src/lib.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\macros.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\primitives.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\windows\mod.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\windows\msvc\mod.rs
-
-D:\IT\UNIVERSITY\PUT\Intervals\target\debug\deps\libc-a31ff481809f6f82.d: D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src/lib.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\macros.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\primitives.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\windows\mod.rs D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\windows\msvc\mod.rs
-
-D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src/lib.rs:
-D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\macros.rs:
-D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\primitives.rs:
-D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\windows\mod.rs:
-D:\IT\SCOOP\persist\rustup\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.171\src\windows\msvc\mod.rs:
