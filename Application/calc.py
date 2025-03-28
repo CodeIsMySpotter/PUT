@@ -1,31 +1,45 @@
-import math
+import struct
 
-def decimal_string_to_exponent(decimal_str: str) -> int:
-    if '.' in decimal_str:
-        parts = decimal_str.split('.')
-        int_part = int(parts[0]) if parts[0] else 0  # Część całkowita
-        frac_part_str = parts[1] if len(parts) > 1 else "0"
+def float64_to_bits(value):
+    import math
+
+    # 1. Ekstrakcja znaku
+    sign = 0 if value >= 0 else 1
+    value = abs(value)
+
+    # 2. Znalezienie wykładnika i mantysy
+    if value == 0:
+        exp = 0
+        mant = 0
     else:
-        int_part = int(decimal_str)
-        frac_part_str = "0"
-    
-    if int_part > 0:
-        return int_part.bit_length() - 1  # floor(log2(int_part))
-    
-    # Jeśli integer_part == 0, analizujemy część ułamkową
-    frac_part = int(frac_part_str)  # Liczba po przecinku jako int
-    frac_bits = len(frac_part_str) * 3.32192809489  # log2(10) ~ 3.32 -> oszacowanie ilości bitów
-    
-    # Konwertujemy część ułamkową na binarną i szukamy pierwszej '1'
-    for i in range(int(math.ceil(frac_bits))):
-        frac_part *= 2
-        if frac_part >= 10**len(frac_part_str):  # Jeśli przekroczy 1.0
-            return -(i + 1)  # Eksponent odpowiada pierwszej jedynce
-    
-    return float('-inf')  # Jeśli liczba to dokładnie 0
+        exp = int(math.log2(value))  # Znajdź wykładnik
+        mant = value / (2 ** exp)  # Unormowana mantysa (1.XXXX * 2^exp)
+        
+        exp += 1023  # Bias dla IEEE 754 (bias = 2^(k-1) - 1, tutaj 1023)
+        
+        if exp <= 0:
+            exp = 0  # Liczba zdenormalizowana
+        elif exp >= 2047:
+            exp = 2047  # Inf lub NaN
 
-# Przykłady
-print(bin(decimal_string_to_exponent("256") + 127))           # 8  (2⁸ = 256)
-print(bin(decimal_string_to_exponent("0.125") + 127))         # -3 (2⁻³ = 0.125)
-print(bin(decimal_string_to_exponent("1.5") + 127))           # 0  (największa potęga 2 w 1.5 to 2⁰)
-print(bin(decimal_string_to_exponent("0.0009765625") + 127))  # -10 (2⁻¹⁰ = 0.0009765625)
+    # 3. Konwersja mantysy na 52-bitową wartość
+    mant_bits = int((mant - 1) * (2**52)) if exp > 0 else int(mant * (2**52))
+
+    # 4. Konwersja do bitów
+    sign_bit = f"{sign:01b}"
+    exp_bits = f"{exp:011b}"
+    mant_bits = f"{mant_bits:052b}"
+
+    return sign_bit + exp_bits + mant_bits
+
+# 🔹 Przykład konwersji
+decimal_number = 3.141592653589793
+bit_representation = float64_to_bits(decimal_number)
+print("64-bit IEEE 754:", bit_representation)
+
+
+
+
+num = 3.141592653589793
+bits = ''.join(f"{b:08b}" for b in struct.pack(">d", num))
+print("64-bit IEEE 754:", bits)
