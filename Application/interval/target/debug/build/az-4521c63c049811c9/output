@@ -1,6 +1,0 @@
-$ mkdir -p "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\az-4521c63c049811c9\\out\\try_track_caller"
-$ cd "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\az-4521c63c049811c9\\out\\try_track_caller"
-$ printf '%s' "// try_tra"... > "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\az-4521c63c049811c9\\out\\try_track_caller\\try_track_caller.rs"
-$ "C:\\Users\\Barto\\scoop\\persist\\rustup\\.rustup\\toolchains\\stable-x86_64-pc-windows-gnu\\bin\\rustc.exe" "try_track_caller.rs" "--emit=dep-info,metadata" >& /dev/null
-cargo:rustc-cfg=track_caller
-$ rm -r "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\az-4521c63c049811c9\\out\\try_track_caller"

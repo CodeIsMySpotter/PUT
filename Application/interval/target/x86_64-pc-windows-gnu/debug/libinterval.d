@@ -1,1 +1,0 @@
-C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\target\x86_64-pc-windows-gnu\debug\libinterval.rlib: C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\src\lib.rs
