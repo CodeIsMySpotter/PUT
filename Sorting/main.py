@@ -1,10 +1,18 @@
 import bubblesort
 import insertionsort
 import selectionsort
+import mergesort
+import quicksort
+import heapsort
+
+import sys
+
 from generator import *
 import sqlite3
 import matplotlib.pyplot as plt
 import time as ti
+
+sys.setrecursionlimit(10000)
 
 
 def plot_time_for_each_alg(cursor: sqlite3.Cursor, conn: sqlite3.Connection, size: int):
@@ -77,6 +85,16 @@ def main():
     
     for record in selectionsort.test():
       record.save_to_db(conn, cursor)
+    
+    for record in mergesort.test():
+      record.save_to_db(conn, cursor)
+
+    for record in quicksort.test():
+      record.save_to_db(conn, cursor)
+    
+    for record in heapsort.test():
+      record.save_to_db(conn, cursor)
+      
     end = ti.time() - start
     print("THE SESSION TOOK: ", end)
 
@@ -87,6 +105,8 @@ def main():
   conn.close()
 
 main()
+
+
 
 
 
