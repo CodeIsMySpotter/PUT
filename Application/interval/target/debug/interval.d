@@ -1,0 +1,1 @@
+C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\target\debug\interval.exe: C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\src\lib.rs C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\src\main.rs

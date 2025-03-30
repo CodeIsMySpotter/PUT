@@ -1,0 +1,24 @@
+cargo:rerun-if-env-changed=GMP_MPFR_SYS_CACHE
+$ mkdir -p "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\lib"
+$ mkdir -p "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\include"
+$ cp "C:\\Users\\Barto\\AppData\\Local\\gmp-mpfr-sys\\1.6\\x86_64-pc-windows-gnu\\1.6.5\\libmpc.a" "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\lib\\libmpc.a"
+$ cp "C:\\Users\\Barto\\AppData\\Local\\gmp-mpfr-sys\\1.6\\x86_64-pc-windows-gnu\\1.6.5\\mpc.h" "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\include\\mpc.h"
+$ cp "C:\\Users\\Barto\\AppData\\Local\\gmp-mpfr-sys\\1.6\\x86_64-pc-windows-gnu\\1.6.5\\libmpfr.a" "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\lib\\libmpfr.a"
+$ cp "C:\\Users\\Barto\\AppData\\Local\\gmp-mpfr-sys\\1.6\\x86_64-pc-windows-gnu\\1.6.5\\mpfr.h" "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\include\\mpfr.h"
+$ cp "C:\\Users\\Barto\\AppData\\Local\\gmp-mpfr-sys\\1.6\\x86_64-pc-windows-gnu\\1.6.5\\libgmp.a" "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\lib\\libgmp.a"
+cargo:limb_bits=64
+cargo:rustc-check-cfg=cfg(nails)
+cargo:rustc-check-cfg=cfg(long_long_limb)
+cargo:rustc-cfg=long_long_limb
+$ cp "C:\\Users\\Barto\\AppData\\Local\\gmp-mpfr-sys\\1.6\\x86_64-pc-windows-gnu\\1.6.5\\gmp.h" "C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\EAN\\PUT\\Application\\interval\\target\\debug\\build\\gmp-mpfr-sys-4dd9b55cb4c0b6f6\\out\\include\\gmp.h"
+cargo:limb_bits=64
+cargo:rustc-check-cfg=cfg(nails)
+cargo:rustc-check-cfg=cfg(long_long_limb)
+cargo:rustc-cfg=long_long_limb
+cargo:out_dir=C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\target\debug\build\gmp-mpfr-sys-4dd9b55cb4c0b6f6\out
+cargo:lib_dir=C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\target\debug\build\gmp-mpfr-sys-4dd9b55cb4c0b6f6\out\lib
+cargo:include_dir=C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\target\debug\build\gmp-mpfr-sys-4dd9b55cb4c0b6f6\out\include
+cargo:rustc-link-search=native=C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\EAN\PUT\Application\interval\target\debug\build\gmp-mpfr-sys-4dd9b55cb4c0b6f6\out\lib
+cargo:rustc-link-lib=static=mpc
+cargo:rustc-link-lib=static=mpfr
+cargo:rustc-link-lib=static=gmp
