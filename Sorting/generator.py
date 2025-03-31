@@ -3,8 +3,9 @@ import numpy as np
 SIZES = [
         100, 200, 300, 400, 500,
         600, 700, 800, 900, 1000,
-        1500, 2000, 2500, 3000, 3500,
-        4000, 4500, 5000, 5500, 6000
+        1100, 1200, 1300, 1400, 1500,
+        1600, 1700, 1800, 1900, 2000,
+        2100, 2200, 2300, 2400, 2500  
 ]
 
 
@@ -16,7 +17,7 @@ class Generator:
         return np.arange(n, 0, -1)
 
     def generate_random(n: int) -> np.ndarray:
-        return np.random.randint(0, 32767, n)
+        return np.random.randint(0, 10000, n)
 
     def generate_A_random(n: int) -> np.ndarray:
         half = n // 2
