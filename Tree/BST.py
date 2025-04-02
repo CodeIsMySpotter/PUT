@@ -27,18 +27,23 @@ class BST():
 
     def pre_order(self):
         self._pre_order(self.root)
+        print()
 
     def _pre_order(self, node: Node):
         if node:
-            print(node.key)
+            print(node.key, end =" ")
             self._pre_order(node.left)
             self._pre_order(node.right)
 
     
     def in_order(self):
-        pass
+        self._in_order(self.root)
+        print()
     
-    def _in_order(self, node: Node):
-        pass
+    def _in_order(self, node):
+        if node:
+            self._in_order(node.left)
+            print(node.key, end=" ")
+            self._in_order(node.right)
 
     
