@@ -4,7 +4,7 @@
 int main() {
     Window win;
     
-    if (createWindow(&win, "My Window", 0.8, 0.8) != 0) {
+    if (createWindow(&win, "My Window", 0.8f, 0.8f) != 0) {
         return -1;
     }
 
