@@ -30,9 +30,9 @@ class BST():
 
     def _pre_order(self, node: Node):
         if node:
-            print(node)
-            self._pre_order(self.root.left)
-            self._pre_order(self.root.right)
+            print(node.key)
+            self._pre_order(node.left)
+            self._pre_order(node.right)
 
     
     def in_order(self):
