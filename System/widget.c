@@ -1,18 +1,27 @@
-#include <widget.h>
-#define MAX_ID_LENGTH 100
+  #include <widget.h>
 
-typedef struct {
-  int width, height;
-  int border_size, border_radius;
+  typedef struct {
+    int width, height;
+    int border_size, border_radius;
 
-  int color;
+    int color;
 
-  int howered;
-  int on_click;
+    int howered;
+    int on_click;
 
-  Widget** children;
-  char id[100];
-} Widget;
-
+    Widget** children;
+    char id[MAX_ID_LENGTH];
+  } Widget;
 
 
+  Widget create_widget(int width, int height, int color, char id[MAX_ID_LENGTH]) {
+    return Widget {
+      width, height,
+      NULL, NULL,
+      color,
+      NULL,
+      NULL,
+      NULL
+      id
+    };
+  }
