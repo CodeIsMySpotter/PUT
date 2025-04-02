@@ -7,7 +7,7 @@ events:
       - "C:/Users/Barto/scoop/apps/cmake/3.31.6/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:205 (message)"
       - "CMakeLists.txt:4 (project)"
     message: |
-      The system is: Windows - 10.0.22631 - AMD64
+      The system is: Windows - 10.0.26100 - AMD64
   -
     kind: "message-v1"
     backtrace:
@@ -24,9 +24,9 @@ events:
       The output was:
       0
       Wersja programu MSBuild 17.11.2+c078802d4 dla .NET Framework
-      Kompilacja rozpocz─Ö┼éa si─Ö 11.03.2025 13:39:38.
+      Kompilacja rozpocz─Ö┼éa si─Ö 02.04.2025 15:59:05.
       
-      Projekt ÔÇ×C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.vcxprojÔÇŁ w w─Ö┼║le 1 (domy┼Ťlne elementy docelowe).
+      Projekt ÔÇ×C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.vcxprojÔÇŁ w w─Ö┼║le 1 (domy┼Ťlne elementy docelowe).
       PrepareForBuild:
         Tworzenie katalogu ÔÇ×Debug\\ÔÇŁ.
         Dane wyj┼Ťciowe ze struktur─ů s─ů w┼é─ůczone. Formatowanie diagnostyki kompilatora b─Ödzie odzwierciedla─ç hierarchi─Ö b┼é─Öd├│w. Aby uzyska─ç wi─Öcej informacji, zobacz https://aka.ms/cpp/structured-output.
@@ -39,7 +39,7 @@ events:
         CMakeCCompilerId.c
       Link:
         C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.41.34120\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
-        CompilerIdC.vcxproj -> C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.exe
+        CompilerIdC.vcxproj -> C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.exe
       PostBuildEvent:
         for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
         :VCEnd
@@ -47,13 +47,13 @@ events:
       FinalizeBuildStatus:
         Usuwanie pliku ÔÇ×Debug\\CompilerIdC.tlog\\unsuccessfulbuildÔÇŁ.
         Modyfikowanie ÔÇ×Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstateÔÇŁ.
-      Kompilowanie projektu ÔÇ×C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.vcxprojÔÇŁ wykonane (domy┼Ťlne elementy docelowe).
+      Kompilowanie projektu ÔÇ×C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\3.31.6\\CompilerIdC\\CompilerIdC.vcxprojÔÇŁ wykonane (domy┼Ťlne elementy docelowe).
       
       Kompilacja powiod┼éa si─Ö.
           Ostrze┼╝enia: 0
           Liczba b┼é─Öd├│w: 0
       
-      Czas, kt├│ry up┼éyn─ů┼é: 00:00:01.26
+      Czas, kt├│ry up┼éyn─ů┼é: 00:00:01.18
       
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -61,7 +61,7 @@ events:
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
       
       The C compiler identification is MSVC, found in:
-        C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/3.31.6/CompilerIdC/CompilerIdC.exe
+        C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/3.31.6/CompilerIdC/CompilerIdC.exe
       
   -
     kind: "try_compile-v1"
@@ -72,8 +72,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/CMakeScratch/TryCompile-15thx6"
-      binary: "C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/CMakeScratch/TryCompile-15thx6"
+      source: "C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/CMakeScratch/TryCompile-kw0sr4"
+      binary: "C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/CMakeScratch/TryCompile-kw0sr4"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -82,40 +82,40 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/CMakeScratch/TryCompile-15thx6'
+        Change Dir: 'C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/CMakeScratch/TryCompile-kw0sr4'
         
-        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_32c5e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_8cd01.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         Wersja programu MSBuild 17.11.2+c078802d4 dla .NET Framework
-        Kompilacja rozpocz─Ö┼éa si─Ö 11.03.2025 13:39:41.
+        Kompilacja rozpocz─Ö┼éa si─Ö 02.04.2025 15:59:07.
         
-        Projekt ÔÇ×C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\CMakeScratch\\TryCompile-15thx6\\cmTC_32c5e.vcxprojÔÇŁ w w─Ö┼║le 1 (domy┼Ťlne elementy docelowe).
+        Projekt ÔÇ×C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kw0sr4\\cmTC_8cd01.vcxprojÔÇŁ w w─Ö┼║le 1 (domy┼Ťlne elementy docelowe).
         PrepareForBuild:
-          Tworzenie katalogu ÔÇ×cmTC_32c5e.dir\\Debug\\ÔÇŁ.
+          Tworzenie katalogu ÔÇ×cmTC_8cd01.dir\\Debug\\ÔÇŁ.
           Dane wyj┼Ťciowe ze struktur─ů s─ů w┼é─ůczone. Formatowanie diagnostyki kompilatora b─Ödzie odzwierciedla─ç hierarchi─Ö b┼é─Öd├│w. Aby uzyska─ç wi─Öcej informacji, zobacz https://aka.ms/cpp/structured-output.
-          Tworzenie katalogu ÔÇ×C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\CMakeScratch\\TryCompile-15thx6\\Debug\\ÔÇŁ.
-          Tworzenie katalogu ÔÇ×cmTC_32c5e.dir\\Debug\\cmTC_32c5e.tlog\\ÔÇŁ.
+          Tworzenie katalogu ÔÇ×C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kw0sr4\\Debug\\ÔÇŁ.
+          Tworzenie katalogu ÔÇ×cmTC_8cd01.dir\\Debug\\cmTC_8cd01.tlog\\ÔÇŁ.
         InitializeBuildStatus:
-          Trwa tworzenie ÔÇ×cmTC_32c5e.dir\\Debug\\cmTC_32c5e.tlog\\unsuccessfulbuildÔÇŁ, poniewa┼╝ okre┼Ťlono "AlwaysCreate".
-          Modyfikowanie ÔÇ×cmTC_32c5e.dir\\Debug\\cmTC_32c5e.tlog\\unsuccessfulbuildÔÇŁ.
+          Trwa tworzenie ÔÇ×cmTC_8cd01.dir\\Debug\\cmTC_8cd01.tlog\\unsuccessfulbuildÔÇŁ, poniewa┼╝ okre┼Ťlono "AlwaysCreate".
+          Modyfikowanie ÔÇ×cmTC_8cd01.dir\\Debug\\cmTC_8cd01.tlog\\unsuccessfulbuildÔÇŁ.
         ClCompile:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.41.34120\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_32c5e.dir\\Debug\\\\" /Fd"cmTC_32c5e.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Barto\\scoop\\apps\\cmake\\3.31.6\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.41.34120\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_8cd01.dir\\Debug\\\\" /Fd"cmTC_8cd01.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Barto\\scoop\\apps\\cmake\\3.31.6\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
           Microsoft (R) C/C++ wersja kompilatora optymalizuj─ůcego 19.41.34120 dla x64
           Copyright (C) Microsoft Corporation. Wszystkie prawa zastrze┼╝one.
-          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_32c5e.dir\\Debug\\\\" /Fd"cmTC_32c5e.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Barto\\scoop\\apps\\cmake\\3.31.6\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_8cd01.dir\\Debug\\\\" /Fd"cmTC_8cd01.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Barto\\scoop\\apps\\cmake\\3.31.6\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
           CMakeCCompilerABI.c
         Link:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.41.34120\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\CMakeScratch\\TryCompile-15thx6\\Debug\\cmTC_32c5e.exe" /INCREMENTAL /ILK:"cmTC_32c5e.dir\\Debug\\cmTC_32c5e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/CMakeScratch/TryCompile-15thx6/Debug/cmTC_32c5e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/CMakeScratch/TryCompile-15thx6/Debug/cmTC_32c5e.lib" /MACHINE:X64  /machine:x64 cmTC_32c5e.dir\\Debug\\CMakeCCompilerABI.obj
-          cmTC_32c5e.vcxproj -> C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\CMakeScratch\\TryCompile-15thx6\\Debug\\cmTC_32c5e.exe
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.41.34120\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kw0sr4\\Debug\\cmTC_8cd01.exe" /INCREMENTAL /ILK:"cmTC_8cd01.dir\\Debug\\cmTC_8cd01.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/CMakeScratch/TryCompile-kw0sr4/Debug/cmTC_8cd01.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/CMakeScratch/TryCompile-kw0sr4/Debug/cmTC_8cd01.lib" /MACHINE:X64  /machine:x64 cmTC_8cd01.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_8cd01.vcxproj -> C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kw0sr4\\Debug\\cmTC_8cd01.exe
         FinalizeBuildStatus:
-          Usuwanie pliku ÔÇ×cmTC_32c5e.dir\\Debug\\cmTC_32c5e.tlog\\unsuccessfulbuildÔÇŁ.
-          Modyfikowanie ÔÇ×cmTC_32c5e.dir\\Debug\\cmTC_32c5e.tlog\\cmTC_32c5e.lastbuildstateÔÇŁ.
-        Kompilowanie projektu ÔÇ×C:\\Users\\Barto\\Desktop\\PROJECTS\\QuickFileManager\\build\\CMakeFiles\\CMakeScratch\\TryCompile-15thx6\\cmTC_32c5e.vcxprojÔÇŁ wykonane (domy┼Ťlne elementy docelowe).
+          Usuwanie pliku ÔÇ×cmTC_8cd01.dir\\Debug\\cmTC_8cd01.tlog\\unsuccessfulbuildÔÇŁ.
+          Modyfikowanie ÔÇ×cmTC_8cd01.dir\\Debug\\cmTC_8cd01.tlog\\cmTC_8cd01.lastbuildstateÔÇŁ.
+        Kompilowanie projektu ÔÇ×C:\\Users\\Barto\\Desktop\\UNIVERSITY\\SEM_II\\C\\PUT\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kw0sr4\\cmTC_8cd01.vcxprojÔÇŁ wykonane (domy┼Ťlne elementy docelowe).
         
         Kompilacja powiod┼éa si─Ö.
             Ostrze┼╝enia: 0
             Liczba b┼é─Öd├│w: 0
         
-        Czas, kt├│ry up┼éyn─ů┼é: 00:00:00.80
+        Czas, kt├│ry up┼éyn─ů┼é: 00:00:00.78
         
       exitCode: 0
   -

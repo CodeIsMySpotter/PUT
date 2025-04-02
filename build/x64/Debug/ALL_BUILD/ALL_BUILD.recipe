@@ -2,13 +2,13 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\Barto\Desktop\PROJECTS\QuickFileManager\build\x64\Debug\ZERO_CHECK</FullPath>
+      <FullPath>C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\C\PUT\build\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\Barto\Desktop\PROJECTS\QuickFileManager\build\Debug\FileManager.exe</FullPath>
+      <FullPath>C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\C\PUT\build\Debug\FileManager.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\Barto\Desktop\PROJECTS\QuickFileManager\build\x64\Debug\ALL_BUILD</FullPath>
+      <FullPath>C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\C\PUT\build\x64\Debug\ALL_BUILD</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

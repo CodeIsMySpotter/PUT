@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\Barto\Desktop\PROJECTS\QuickFileManager\System\widget.c">
+    <ClCompile Include="C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\C\PUT\System\widget.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Barto\Desktop\PROJECTS\QuickFileManager\System\window.c">
+    <ClCompile Include="C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\C\PUT\System\window.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Barto\Desktop\PROJECTS\QuickFileManager\main.c">
+    <ClCompile Include="C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\C\PUT\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Barto\Desktop\PROJECTS\QuickFileManager\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\Barto\Desktop\UNIVERSITY\SEM_II\C\PUT\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{C7001BDD-61CA-34F2-8119-65321F999CD8}</UniqueIdentifier>
+      <UniqueIdentifier>{D0CA5365-5DB7-3242-A01B-2A3F2D422AA5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
