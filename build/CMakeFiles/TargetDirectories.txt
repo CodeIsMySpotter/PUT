@@ -1,0 +1,3 @@
+C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/FileManager.dir
+C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Barto/Desktop/PROJECTS/QuickFileManager/build/CMakeFiles/ZERO_CHECK.dir
