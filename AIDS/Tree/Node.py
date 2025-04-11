@@ -5,6 +5,6 @@ class Node():
     self.left = None
     self.right = None
     self.key = key
-
+    self.height = 1
 
     

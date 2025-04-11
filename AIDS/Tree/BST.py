@@ -25,11 +25,16 @@ class BST():
             else:
                 self._insert(node.right, key)
 
-    def pre_order(self, node=None):
-        if node is None:
-           self._pre_order(self.root)
+
+    def pre_order(self, key=None):
+        if key is None:
+            self._in_order(self.root)
         else:
-            self._pre_order(node)
+            node = self._find(self.root, key)
+            if node:
+                self._pre_order(node)
+            else:
+                print(f"Nie znaleziono węzła o kluczu {key}")
         print()
 
     def _pre_order(self, node: Node):
@@ -39,11 +44,15 @@ class BST():
             self._pre_order(node.right)
 
     
-    def in_order(self, node=None):
-        if node is None:
+    def in_order(self, key=None):
+        if key is None:
             self._in_order(self.root)
         else:
-            self._in_order(node)
+            node = self._find(self.root, key)
+            if node:
+                self._in_order(node)
+            else:
+                print(f"Nie znaleziono węzła o kluczu {key}")
         print()
     
     def _in_order(self, node):
@@ -60,6 +69,17 @@ class BST():
             print(f'Wartość: {current.key}')
             current = current.right
         return current
+    
+    def _find(self, node, key):
+        if node is None:
+            return None
+        if key == node.key:
+            return node
+        elif key < node.key:
+            return self._find(node.left, key)
+        else:
+            return self._find(node.right, key)
+
 
     def find_min(self, node: None):
         print("Szukam minimum")
@@ -106,6 +126,10 @@ class BST():
 
         return node
     
+    def delete_tree(self):
+        self._delete_post_order_recursive(self.root)
+        self.root = None
+
     def _delete_post_order_recursive(self, node):
         if node is None:
             return None
@@ -116,52 +140,27 @@ class BST():
         print(f'Usuwam węzeł: {node.key}')  
         return None 
     
+    def balance_by_root_deletion(self):
+        keys = []
+        self._gather_in_order(self.root, keys)
+        self.root = self._delete_post_order_recursive(self.root)
+        self.root = self._build_balanced(keys)
 
-    def balance_DSW(self):
-        self._create_vine()
-        self._balance_vine()
+    def _gather_in_order(self, node, result):
+        if node:
+            self._gather_in_order(node.left, result)
+            result.append(node.key)
+            self._gather_in_order(node.right, result)
 
-    def _create_vine(self):
-        grandparent = None
-        parent = self.root
-        while parent is not None:
-            if parent.left is not None:
-                child = parent.left
-                parent.left = child.right
-                child.right = parent
-                if grandparent is None:
-                    self.root = child
-                else:
-                    grandparent.right = child
-                parent = child
-            else:
-                grandparent = parent
-                parent = parent.right
+    def _build_balanced(self, keys):
+        if not keys:
+            return None
+        mid = len(keys) // 2
+        node = Node(keys[mid])
+        node.left = self._build_balanced(keys[:mid])
+        node.right = self._build_balanced(keys[mid + 1:])
+        return node
 
-    def _balance_vine(self):
-        n = self._count_nodes(self.root)
-        m = 2 ** (n.bit_length() - 1) - 1  # 2^floor(log2(n+1)) - 1
-
-        self._compress(n - m)
-        while m > 1:
-            m //= 2
-            self._compress(m)
-
-    def _compress(self, count):
-        grandparent = None
-        parent = self.root
-        for _ in range(count):
-            if parent.right is None:
-                break
-            child = parent.right
-            parent.right = child.left
-            child.left = parent
-            if grandparent is None:
-                self.root = child
-            else:
-                grandparent.right = child
-            grandparent = child
-            parent = child.right
 
     def _count_nodes(self, node):
         if node is None:
