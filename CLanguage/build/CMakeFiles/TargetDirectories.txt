@@ -1,3 +1,0 @@
-C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/FileManager.dir
-C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/Barto/Desktop/UNIVERSITY/SEM_II/C/PUT/build/CMakeFiles/ZERO_CHECK.dir

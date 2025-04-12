@@ -1,17 +1,9 @@
-#include <windows.h>
-#include <window.h>
+#include <stdio.h>
+#include "GLFW/glfw3.h";
+#include "GL/gl.h";
+#include "leif.h";
 
 int main() {
-    Window win;
-    
-    if (createWindow(&win, "My Window", 0.8f, 0.8f) != 0) {
-        return -1;
-    }
-
-    ShowWindow(win.hwnd, SW_SHOW);
-    UpdateWindow(win.hwnd);
-    startEventLoop(&win);
-    destroyWindow(&win);
-
-    return 0;
+  printf("Hello, World!\n");
+  return 0;
 }
