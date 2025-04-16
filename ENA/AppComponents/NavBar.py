@@ -25,11 +25,14 @@ def create_navbar(parent):
     navbar_widget = QWidget()
     navbar_widget.setGeometry(0, 0, parent.window_width, 75)
     navbar_layout = QHBoxLayout(navbar_widget)
+    navbar_widget.setObjectName("navbar-widget")
     
     title_label = create_title_label()
     close_button = create_close_button(parent)
     minimize_button = create_minimize_button(parent)
+    icon = create_app_icon()
 
+    navbar_layout.addWidget(icon, alignment=Qt.AlignLeft)
     navbar_layout.addWidget(title_label)
     navbar_layout.addStretch()
     navbar_layout.addWidget(minimize_button)
@@ -58,9 +61,7 @@ def create_close_button(window):
         #close-button:hover {{
             background-color: {CATPPUCCIN["maroon"]};
         }}
-        #close-button:pressed {{
-            background-color: {CATPPUCCIN["mauve"]};
-        }}
+       
     """)
 
     button.clicked.connect(lambda: QApplication.quit())
@@ -84,9 +85,7 @@ def create_minimize_button(window):
         #minimize-button:hover {{
             background-color: {CATPPUCCIN["maroon"]};
         }}
-        #minimize-button:pressed {{
-            background-color: {CATPPUCCIN["mauve"]};
-        }}
+        
     """)
 
     button.clicked.connect(window.showMinimized)
@@ -108,5 +107,17 @@ def create_title_label():
     
     return label
 
-def create_icon_label():
-    pass
+def create_app_icon():
+  icon = QLabel()
+
+  icon.setObjectName("app-icon")
+  icon.setPixmap(QIcon("./AppComponents/icons/logo.png").pixmap(80, 80))
+  icon.setStyleSheet(f"""
+      #app-icon{{
+          background-color: {CATPPUCCIN['base']};
+          border-radius: 6px;
+          padding: 10px;
+      }}
+  """)
+
+  return icon
