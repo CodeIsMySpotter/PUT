@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QVBoxLayout, QSpacerItem
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QGuiApplication
 import sys
 
 from AppComponents.Colors import *
 from AppComponents.NavBar import create_navbar
+from AppComponents.OptionBar import create_option_bar
 
 class Application(QMainWindow):
     def __init__(self):
@@ -35,7 +36,10 @@ class Application(QMainWindow):
     def create_background_widget(self):
         self.background_widget = QWidget(self.main_widget)
         self.background_widget.setObjectName("background-widget")
-        layout = QVBoxLayout()
+
+        main_vertical_layout = QVBoxLayout()
+        main_horizontal_layout = QHBoxLayout()
+
         self.background_widget.setGeometry(0, 0, self.window_width, self.window_height)
         self.background_widget.setStyleSheet(f"""
             #background-widget {{
@@ -46,9 +50,14 @@ class Application(QMainWindow):
         """)
 
         navbar = create_navbar(self)
-        layout.addWidget(navbar)
-        layout.addStretch()
-        self.background_widget.setLayout(layout)
+        left_navbar = create_option_bar(self)
+
+        main_vertical_layout.addWidget(navbar)
+
+        main_horizontal_layout.addWidget(left_navbar)
+        main_horizontal_layout.addStretch()
+        main_vertical_layout.addLayout(main_horizontal_layout)
+        self.background_widget.setLayout(main_vertical_layout)
 
 
     def center_window(self):

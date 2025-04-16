@@ -94,7 +94,7 @@ def create_minimize_button(window):
     return button
 
 def create_title_label():
-    label = QLabel("Lagrange interpolation")
+    label = QLabel("Lagrange interpolation and Neville's algorithm")
     label.setObjectName("title-label")
     label.setStyleSheet(f"""
         #title-label{{
