@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QVBoxLayout, QSpacerItem
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QGuiApplication
 import sys
@@ -34,12 +34,22 @@ class Application(QMainWindow):
     
     def create_background_widget(self):
         self.background_widget = QWidget(self.main_widget)
+        self.background_widget.setObjectName("background-widget")
+        layout = QVBoxLayout()
         self.background_widget.setGeometry(0, 0, self.window_width, self.window_height)
         self.background_widget.setStyleSheet(f"""
-            background-color: {CATPPUCCIN['base']};
-            border-radius: 15px;
-            border: 4px solid {CATPPUCCIN['mauve']}
+            #background-widget {{
+                background-color: {CATPPUCCIN['base']};
+                border-radius: 15px;
+                border: 4px solid {CATPPUCCIN['mauve']}
+            }}
         """)
+
+        navbar = create_navbar(self)
+        layout.addWidget(navbar)
+        layout.addStretch()
+        self.background_widget.setLayout(layout)
+
 
     def center_window(self):
         screen = QGuiApplication.primaryScreen()
