@@ -1,52 +1,50 @@
-
-import PyQt5
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import QGuiApplication
 import sys
-import os
 
-from AppComponents.NavBar import NavBar
+from AppComponents.Colors import *
 
 class Application(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.main_widget = QWidget(self)
-        self.setCentralWidget(self.main_widget)
 
+        self.background_widget = None
+        self.main_widget = None
 
+        self.window_width = 1000
+        self.window_height = 600
+
+        self.init_window()
+        self.create_main_widget()
+        self.create_background_widget()
+        self.center_window()
+
+    def init_window(self):
         self.setWindowTitle("ENA Application")
         self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setGeometry(100, 100, 800, 600)
-        
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setGeometry(100, 100, self.window_width, self.window_height)
 
-    def setup_style(self):
-        self.styleSheet = """
-        QMainWindow {
-            background-color: transparent;
-            border-radius: 10px;
-        }
-        """
-        self.setStyleSheet(self.styleSheet)
+    def create_main_widget(self):
+        self.main_widget = QWidget(self)
+        self.main_widget.setStyleSheet("background-color: transparent;")
+        self.setCentralWidget(self.main_widget)
+    
+    def create_background_widget(self):
+        self.background_widget = QWidget(self.main_widget)
+        self.background_widget.setGeometry(0, 0, self.window_width, self.window_height)
+        self.background_widget.setStyleSheet(f"""
+            background-color: {CATPPUCCIN['base']};
+            border-radius: 15px;
+        """)
 
-    def setup_main_widget(self):
-        self.layout = QVBoxLayout(self.main_widget)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.setSpacing(0)
-
-        self.navbar = NavBar(self.main_widget)
-        self.layout.addWidget(self.navbar)
-
-        self.content_area = QWidget(self.main_widget)
-        self.content_area.setStyleSheet("background-color: #3B4252;")
-        self.layout.addWidget(self.content_area)
-
-        self.label = QLabel("Welcome to ENA", self.content_area)
-        self.label.setFont(QFont("Arial", 24))
-        self.label.setStyleSheet("color: #D8DEE9;")
-        self.label.setAlignment(Qt.AlignCenter)
-        self.label.setGeometry(0, 0, 800, 600)
-
+    def center_window(self):
+        screen = QGuiApplication.primaryScreen()
+        screen_geometry = screen.availableGeometry()
+        x = (screen_geometry.width() - self.window_width) // 2
+        y = (screen_geometry.height() - self.window_height) // 2
+        self.move(QPoint(x, y))
 
 
 
