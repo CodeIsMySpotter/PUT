@@ -6,19 +6,34 @@ from PyQt5.QtGui import QIcon, QFont
 from AppComponents.Colors import *
 
 
+def create_title_label():
+    label = QLabel("Lagrange interpolation")
+    label.setObjectName("title-label")
+    label.setStyleSheet(f"""
+        #title-label{{
+            font-size: 28px;
+            font-weight: bold;
+            color: {CATPPUCCIN['text']};
+            background-color: {CATPPUCCIN['base']};
+            padding: 10px;
+        }}
+    """)
+    
+    return label
+
 def create_navbar(parent):
     navbar_widget = QWidget()
     navbar_widget.setGeometry(0, 0, parent.window_width, 75)
     navbar_layout = QHBoxLayout(navbar_widget)
     
     title_label = create_title_label()
-    close_button = create_close_button()
-    minimize_button = create_minimize_button()
+    close_button = create_close_button(parent)
+    minimize_button = create_minimize_button(parent)
 
     navbar_layout.addWidget(title_label)
     navbar_layout.addStretch()
-    navbar_layout.addWidget(close_button)
     navbar_layout.addWidget(minimize_button)
+    navbar_layout.addWidget(close_button)
     
     navbar_layout.setContentsMargins(10, 10, 10, 10) 
     navbar_layout.setSpacing(20)
@@ -26,7 +41,7 @@ def create_navbar(parent):
 
 
 
-def create_close_button():
+def create_close_button(window):
     button = QPushButton()
     button.setObjectName("close-button")
 
@@ -35,9 +50,7 @@ def create_close_button():
 
     button.setStyleSheet(f"""
         #close-button{{
-            background-color: {CATPPUCCIN["red"]};
-            color: {CATPPUCCIN["base"]};
-            border: none;
+            border: 2px solid {CATPPUCCIN["red"]};
             border-radius: 6px;
             font-weight: bold;
             font-size: 16px;
@@ -50,9 +63,11 @@ def create_close_button():
         }}
     """)
 
+    button.clicked.connect(lambda: QApplication.quit())
+
     return button
 
-def create_minimize_button():
+def create_minimize_button(window):
     button = QPushButton()
     button.setObjectName("minimize-button")
     
@@ -61,9 +76,7 @@ def create_minimize_button():
 
     button.setStyleSheet(f"""
         #minimize-button{{
-            background-color: {CATPPUCCIN["red"]};
-            color: {CATPPUCCIN["base"]};
-            border: none;
+            border: 2px solid {CATPPUCCIN["red"]};
             border-radius: 6px;
             font-weight: bold;
             font-size: 16px;
@@ -75,6 +88,8 @@ def create_minimize_button():
             background-color: {CATPPUCCIN["mauve"]};
         }}
     """)
+
+    button.clicked.connect(window.showMinimized)
 
     return button
 
@@ -94,4 +109,4 @@ def create_title_label():
     return label
 
 def create_icon_label():
-  pass
+    pass
