@@ -4,6 +4,7 @@ from PyQt5.QtGui import QGuiApplication
 import sys
 
 from AppComponents.Colors import *
+from AppComponents.NavBar import create_navbar
 
 class Application(QMainWindow):
     def __init__(self):
@@ -12,8 +13,8 @@ class Application(QMainWindow):
         self.background_widget = None
         self.main_widget = None
 
-        self.window_width = 1000
-        self.window_height = 600
+        self.window_width = 1400
+        self.window_height = 800
 
         self.init_window()
         self.create_main_widget()
@@ -37,6 +38,7 @@ class Application(QMainWindow):
         self.background_widget.setStyleSheet(f"""
             background-color: {CATPPUCCIN['base']};
             border-radius: 15px;
+            border: 4px solid {CATPPUCCIN['mauve']}
         """)
 
     def center_window(self):
