@@ -5,6 +5,9 @@ from PyQt5.QtGui import QIcon, QFont
 
 from AppComponents.Colors import *
 
+BUTTON_WIDTH = 80
+BUTTON_HEIGHT = 80
+
 
 def create_title_label():
     label = QLabel("Lagrange interpolation")
@@ -48,18 +51,21 @@ def create_close_button(window):
     button = QPushButton()
     button.setObjectName("close-button")
 
-    button.setFixedWidth(50)
-    button.setFixedHeight(50)
+    button.setFixedWidth(BUTTON_WIDTH)
+    button.setFixedHeight(BUTTON_HEIGHT)
+
+    button.setIcon(QIcon("./AppComponents/icons/close.png"))
+    button.setIconSize(PyQt5.QtCore.QSize(30, 30))
+
 
     button.setStyleSheet(f"""
         #close-button{{
-            border: 2px solid {CATPPUCCIN["red"]};
-            border-radius: 6px;
+            border-radius: 15px;
             font-weight: bold;
             font-size: 16px;
         }}
         #close-button:hover {{
-            background-color: {CATPPUCCIN["maroon"]};
+            border: 4px solid {CATPPUCCIN["red"]};
         }}
        
     """)
@@ -72,18 +78,21 @@ def create_minimize_button(window):
     button = QPushButton()
     button.setObjectName("minimize-button")
     
-    button.setFixedWidth(50)
-    button.setFixedHeight(50)
+    button.setFixedWidth(BUTTON_WIDTH)
+    button.setFixedHeight(BUTTON_HEIGHT)
+
+    button.setIcon(QIcon("./AppComponents/icons/minimize.png"))
+    button.setIconSize(PyQt5.QtCore.QSize(30, 30))
 
     button.setStyleSheet(f"""
         #minimize-button{{
-            border: 2px solid {CATPPUCCIN["red"]};
-            border-radius: 6px;
+            border-radius: 15px;
             font-weight: bold;
             font-size: 16px;
         }}
         #minimize-button:hover {{
-            background-color: {CATPPUCCIN["maroon"]};
+            border: 4px solid {CATPPUCCIN["red"]};
+
         }}
         
     """)
@@ -91,6 +100,8 @@ def create_minimize_button(window):
     button.clicked.connect(window.showMinimized)
 
     return button
+
+
 
 def create_title_label():
     label = QLabel("Lagrange interpolation and Neville's algorithm")

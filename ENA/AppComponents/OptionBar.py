@@ -39,16 +39,20 @@ def create_option_button_I():
   button.setObjectName("option-button-I")
   button.setFixedWidth(BUTTON_WIDTH)
   button.setFixedHeight(BUTTON_HEIGHT)
+
+  button.setIcon(QIcon("./AppComponents/icons/real_logo.png"))
+  button.setIconSize(PyQt5.QtCore.QSize(60, 60))
+
   button.setStyleSheet(f"""
       #option-button-I{{
           background-color: {CATPPUCCIN["base"]};
-          border-radius: 6px;
-          border: 2px solid {CATPPUCCIN["red"]};
+          border-radius: 15px;
+          border: 4px solid {CATPPUCCIN["red"]};
           font-weight: bold;
           font-size: 16px;
       }}
       #option-button-I:hover {{
-          background-color: {CATPPUCCIN["maroon"]};
+          border: 8px solid {CATPPUCCIN["red"]};
       }}
   """)
 
@@ -63,15 +67,16 @@ def create_option_button_II():
   button.setStyleSheet(f"""
       #option-button-II{{
           background-color: {CATPPUCCIN["base"]};
-          border-radius: 6px;
-          border: 2px solid {CATPPUCCIN["red"]};
+          border-radius: 15px;
+          border: 4px solid {CATPPUCCIN["red"]};
           font-weight: bold;
           font-size: 16px;
       }}
       #option-button-II:hover {{
-          background-color: {CATPPUCCIN["maroon"]};
+          border: 8px solid {CATPPUCCIN["red"]};
       }}
   """)
+
 
   return button
 
@@ -84,13 +89,13 @@ def creater_option_button_III():
   button.setStyleSheet(f"""
       #option-button-III{{
           background-color: {CATPPUCCIN["base"]};
-          border-radius: 6px;
-          border: 2px solid {CATPPUCCIN["red"]};
+          border-radius: 15px;
+          border: 4px solid {CATPPUCCIN["red"]};
           font-weight: bold;
           font-size: 16px;
       }}
       #option-button-III:hover {{
-          background-color: {CATPPUCCIN["maroon"]};
+          border: 8px solid {CATPPUCCIN["red"]};
       }}
   """)
 
