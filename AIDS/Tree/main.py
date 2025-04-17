@@ -11,8 +11,8 @@ ARRAY = [1, 2, 3, 4, 5, 6, 7,8 ,9]
 
 
 def main():
-  bst_test()
-  #avl_test()
+  #bst_test()
+  avl_test()
 
 def avl_test():
   print("///////// AVL //////////")

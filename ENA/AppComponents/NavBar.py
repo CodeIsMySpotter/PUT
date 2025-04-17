@@ -97,11 +97,10 @@ def create_title_label():
     label.setObjectName("title-label")
     label.setStyleSheet(f"""
         #title-label{{
-            font-size: 28px;
+            font-size: 34px;
             font-weight: bold;
             color: {CATPPUCCIN['text']};
             background-color: {CATPPUCCIN['base']};
-            padding: 10px;
         }}
     """)
     
