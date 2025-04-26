@@ -41,7 +41,7 @@ def create_navbar(parent):
     navbar_layout.addWidget(minimize_button)
     navbar_layout.addWidget(close_button)
     
-    navbar_layout.setContentsMargins(10, 10, 10, 10) 
+    navbar_layout.setContentsMargins(20, 10, 10, 10) 
     navbar_layout.setSpacing(20)
     return navbar_widget
 
@@ -57,6 +57,7 @@ def create_close_button(window):
     button.setIcon(QIcon("./AppComponents/icons/close.png"))
     button.setIconSize(PyQt5.QtCore.QSize(30, 30))
 
+    
 
     button.setStyleSheet(f"""
         #close-button{{
@@ -121,7 +122,7 @@ def create_app_icon():
   icon = QLabel()
 
   icon.setObjectName("app-icon")
-  icon.setPixmap(QIcon("./AppComponents/icons/logo.png").pixmap(80, 80))
+  icon.setPixmap(QIcon("./AppComponents/icons/logo.png").pixmap(100, 100))
   icon.setStyleSheet(f"""
       #app-icon{{
           background-color: {CATPPUCCIN['base']};

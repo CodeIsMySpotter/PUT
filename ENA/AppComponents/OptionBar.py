@@ -5,18 +5,18 @@ from PyQt5.QtGui import QIcon, QFont
 
 from AppComponents.Colors import *
 
-BUTTON_WIDTH = 80
-BUTTON_HEIGHT = 80
+BUTTON_WIDTH = 100
+BUTTON_HEIGHT = 100
 
 
 def create_option_bar(parent):
   option_bar = QWidget()
-  option_bar.setFixedWidth(200)
+  option_bar.setFixedWidth(300)
   option_bar.setFixedHeight(parent.window_height- 180)
 
 
   option_bar_layout = QVBoxLayout(option_bar)
-  option_bar_layout.setContentsMargins(10, 10, 10, 10)
+  option_bar_layout.setContentsMargins(20, 10, 10, 10)
   option_bar_layout.setSpacing(20)
 
 
