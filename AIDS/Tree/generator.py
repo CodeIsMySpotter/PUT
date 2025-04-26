@@ -4,6 +4,6 @@ import numpy as np
 
 class Generator():
 
-  def generate_int(range: int, length: int):
+  def generate_int(length: int):
 
-    return np.random.randint(1, range, length)
+    return [idx for idx in range(length, -1, -1)]

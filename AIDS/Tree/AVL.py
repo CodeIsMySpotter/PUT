@@ -6,7 +6,6 @@ class AVL(BST):
     def insert(self, keys):
         self.root = self._insert(keys)
         
-
     
     def _insert(self, keys):
         if not keys:
@@ -47,7 +46,7 @@ class AVL(BST):
         elif key > node.key:
             node.right = self._delete_recursive(node.right, key)
         else:
-            print(f"Usuwam węzeł: {node.key}")
+            #print(f"Usuwam węzeł: {node.key}")
             if node.left is None:
                 return node.right
             elif node.right is None:

@@ -58,16 +58,23 @@ class BST():
     def _in_order(self, node):
         if node:
             self._in_order(node.left)
-            print(node.key, end=" ")
+            #print(node.key, end=" ")
             self._in_order(node.right)
 
 
-    def find_max(self, node: None):
-        print("Szukam maksimum")
+    def find_max(self, node=None):
+        if node is None:
+            node = self.root
+
+        if node is None:
+            return None 
+
+        #print("Szukam maksimum")
         current = node
         while current.right is not None:
-            print(f'Wartość: {current.key}')
+            #print(f'Wartość: {current.key}')
             current = current.right
+        #print(f'Maksimum: {current.key}')
         return current
     
     def _find(self, node, key):
@@ -81,13 +88,21 @@ class BST():
             return self._find(node.right, key)
 
 
-    def find_min(self, node: None):
-        print("Szukam minimum")
+    def find_min(self, node=None):
+        if node is None:
+            node = self.root
+
+        if node is None:
+            return None 
+
+        #print("Szukam minimum")
         current = node
         while current.left is not None:
-            print(f'Wartość: {current.key}')
+            #print(f'Wartość: {current.key}')
             current = current.left
+        #print(f'Minimum: {current.key}')
         return current
+
 
     
     def delete(self, key):
@@ -99,7 +114,7 @@ class BST():
             keys = list(map(int, input(f"Podaj {n} wartości kluczy do usunięcia (oddzielone spacją): ").split()))
 
             for key in keys:
-                print(f"Usuwam: {key}")
+                #print(f"Usuwam: {key}")
                 self.delete(key)
 
         except ValueError:
@@ -137,7 +152,7 @@ class BST():
         node.left = self._delete_post_order_recursive(node.left)
         node.right = self._delete_post_order_recursive(node.right)
 
-        print(f'Usuwam węzeł: {node.key}')  
+        #print(f'Usuwam węzeł: {node.key}')  
         return None 
     
     def balance_by_root_deletion(self):
