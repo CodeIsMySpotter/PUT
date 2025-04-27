@@ -58,7 +58,7 @@ class BST():
     def _in_order(self, node):
         if node:
             self._in_order(node.left)
-            #print(node.key, end=" ")
+            print(node.key, end=" ")
             self._in_order(node.right)
 
 

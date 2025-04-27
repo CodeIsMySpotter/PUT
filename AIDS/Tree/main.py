@@ -17,7 +17,7 @@ import sys
 sys.setrecursionlimit(10**6)
 
 
-K = [1000, 2000, 3000, 4000]
+K = [1000, 10000, 25000, 50000, 75000, 100000]
 
 def main_test():
 
@@ -34,44 +34,67 @@ def main_test():
 
 
   for k in K:
-    print(f"Test for k = {k} started")
-    array = Generator.generate_int(k)
-    bst_session(array.copy(), cursor, conn, k)
-    avl_session(array.copy(), cursor, conn, k)
+    for i in range(1):
+      array = Generator.generate_int(k)
+      bst_session(array, cursor, conn, k)
+      avl_session(array, cursor, conn, k)
+      print(f"Session {i+1} for k={k} completed.")
   
   conn.commit()
   
 
-  plot_operation(cursor, "create", "AIDS/Tree/plots/create.png")
-  plot_operation(cursor, "find min", "AIDS/Tree/plots/find_min.png")
-  plot_operation(cursor, "in order", "AIDS/Tree/plots/in_order.png")
-  plot_operation(cursor, "balance", "AIDS/Tree/plots/balance.png")
+  plot_operation(cursor, "create", "AIDS/Tree/plots/create.png", "Tworzenie drzewa")
+  plot_operation(cursor, "find min", "AIDS/Tree/plots/find_min.png", "Wyszukiwanie minimum")
+  plot_operation(cursor, "in order", "AIDS/Tree/plots/in_order.png", "In order")
+  plot_operation(cursor, "balance", "AIDS/Tree/plots/balance.png", "Balansowanie")
   
   conn.close()
 
 
 
-def plot_operation(cursor, operation_name, output_file):
+def plot_operation(cursor, operation_name, output_file, title):
     cursor.execute('SELECT * FROM test_results WHERE name = ?', (operation_name,))
     rows = cursor.fetchall()
 
-    x_bst = [row[2] for row in rows if row[3] == 'bst']
-    y_bst = [row[0] for row in rows if row[3] == 'bst']
-    x_avl = [row[2] for row in rows if row[3] == 'avl']
-    y_avl = [row[0] for row in rows if row[3] == 'avl']
+    # Grupy wyników po (k, type)
+    bst_data = {}
+    avl_data = {}
 
+    for row in rows:
+        time = row[0]
+        k = row[2]
+        tree_type = row[3]
+
+        if tree_type == 'bst':
+            if k not in bst_data:
+                bst_data[k] = []
+            bst_data[k].append(time)
+        elif tree_type == 'avl':
+            if k not in avl_data:
+                avl_data[k] = []
+            avl_data[k].append(time)
+
+    # Oblicz średnie wartości
+    x_bst = sorted(bst_data.keys())
+    y_bst = [sum(bst_data[k]) / len(bst_data[k]) for k in x_bst]
+
+    x_avl = sorted(avl_data.keys())
+    y_avl = [sum(avl_data[k]) / len(avl_data[k]) for k in x_avl]
+
+    # Rysuj wykres
     plt.plot(x_bst, y_bst, label='BST')
     plt.plot(x_avl, y_avl, label='AVL')
 
     plt.xlabel('n')
-    plt.ylabel('time (s)')
-    plt.title(f'{operation_name.capitalize()} time vs k')
+    plt.ylabel('Czas (s)')
+    plt.title(title)
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
 
     plt.savefig(output_file)
     plt.close()
+
 
 def bst_session(array: list, cursor, conn, k):
   bst = BST()
@@ -135,7 +158,7 @@ def test_balance_bst(tree: BST):
 def avl_session(array: list, cursor, conn, k):
   avl = AVL()
 
-  avl_create, avl = test_create_avl(avl)
+  avl_create, avl = test_create_avl(avl, array)
   avl_find_min = test_find_min_avl(avl)
   avl_in_order = test_in_order_avl(avl)
   print(f"AVL: k: {k} {avl_create.time}, {avl_find_min.time}, {avl_in_order.time}")
@@ -160,13 +183,13 @@ def test_create_avl(tree: AVL, k: list):
   then = ti.time()
   return Record(then - now, "create", "avl"), tree
 
-def test_find_min_avl(tree: AVL, k: list):
+def test_find_min_avl(tree: AVL):
   now = ti.time()
   tree.find_min()
   then = ti.time()
   return Record(then - now, "find min", "avl")
 
-def test_in_order_avl(tree: AVL, k: list):
+def test_in_order_avl(tree: AVL):
   now = ti.time()
   tree.in_order()
   then = ti.time()
