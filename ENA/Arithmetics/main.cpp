@@ -1,21 +1,33 @@
 #include <iostream>
 #include <boost/multiprecision/float128.hpp>
+#include <interval.h>
+#include <lagrange_interpolation.h>
+#include <vector>
 
+using namespace boost::multiprecision;
+using namespace std;
 int main() {
-    using boost::multiprecision::float128;
+  vector<float128> x = {100, 121, 144}; 
+  vector<float128> y = {10, 11, 12};  
+  float128 x_val = 117; 
 
-    float128 a = 0.1;
-    float128 b = 0.2;
 
-    std::cout << std::fixed << std::setprecision(35);
-    std::cout << "Wynik (float128): " << a + b << std::endl;
+  cout << fixed << setprecision(20); // Ustawienie precyzji wyjścia
+  // Obliczanie wartości Lagrange'a
+  auto [result_lagrange, status_lagrange] = lagrange_interpolation(x, y, x_val);
+  if (status_lagrange != 0) {
+      cout << "Blad w obliczeniach Lagrange'a. Status: " << status_lagrange << endl;
+  } else {
+      cout << "Wartosc wielomianu Lagrange'a w punkcie " << x_val << " to: " << result_lagrange << endl;
+  }
 
-    double c = 0.1;
-    double d = 0.2;
-    std::cout << "Wynik (double): " << c + d << std::endl;
+  // Obliczanie wartości Nevile'a
+  auto [result_neville, status_neville] = neville_interpolation(x, y, x_val);
+  if (status_neville != 0) {
+      cout << "Blad w obliczeniach Nevile'a. Status: " << status_neville << endl;
+  } else {
+      cout << "Wartosc wielomianu Nevile'a w punkcie " << x_val << " to: " << result_neville << endl;
+  }
 
-    return 0;
+  return 0;
 }
-
-
-// g++ main.cpp -O2 -I/mingw64/include -lquadmath -o main

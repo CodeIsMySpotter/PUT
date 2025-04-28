@@ -36,16 +36,16 @@ def main_test():
   for k in K:
     for i in range(1):
       array = Generator.generate_int(k)
-      bst_session(array, cursor, conn, k)
-      avl_session(array, cursor, conn, k)
+      #bst_session(array, cursor, conn, k)
+      #avl_session(array, cursor, conn, k)
       print(f"Session {i+1} for k={k} completed.")
   
   conn.commit()
   
 
-  plot_operation(cursor, "create", "AIDS/Tree/plots/create.png", "Tworzenie drzewa")
-  plot_operation(cursor, "find min", "AIDS/Tree/plots/find_min.png", "Wyszukiwanie minimum")
-  plot_operation(cursor, "in order", "AIDS/Tree/plots/in_order.png", "In order")
+  #plot_operation(cursor, "create", "AIDS/Tree/plots/create.png", "Tworzenie drzewa")
+  #plot_operation(cursor, "find min", "AIDS/Tree/plots/find_min.png", "Wyszukiwanie minimum")
+  #plot_operation(cursor, "in order", "AIDS/Tree/plots/in_order.png", "In order")
   plot_operation(cursor, "balance", "AIDS/Tree/plots/balance.png", "Balansowanie")
   
   conn.close()
@@ -69,21 +69,15 @@ def plot_operation(cursor, operation_name, output_file, title):
             if k not in bst_data:
                 bst_data[k] = []
             bst_data[k].append(time)
-        elif tree_type == 'avl':
-            if k not in avl_data:
-                avl_data[k] = []
-            avl_data[k].append(time)
+        
 
     # Oblicz średnie wartości
     x_bst = sorted(bst_data.keys())
     y_bst = [sum(bst_data[k]) / len(bst_data[k]) for k in x_bst]
 
-    x_avl = sorted(avl_data.keys())
-    y_avl = [sum(avl_data[k]) / len(avl_data[k]) for k in x_avl]
 
     # Rysuj wykres
     plt.plot(x_bst, y_bst, label='BST')
-    plt.plot(x_avl, y_avl, label='AVL')
 
     plt.xlabel('n')
     plt.ylabel('Czas (s)')
