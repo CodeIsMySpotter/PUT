@@ -1,7 +1,8 @@
 #include <boost/multiprecision/float128.hpp>
 #include <iostream>
 #include <vector>
-#include <lagrange_interpolation.h>
+#include <interpolation.h>
+#include <interval.h>
 #include <set>
 
 using namespace boost::multiprecision;
