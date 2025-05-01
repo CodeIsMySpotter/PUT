@@ -1,5 +1,4 @@
-#ifndef INTERVAL_H
-#define INTERVAL_H
+#pragma once
 
 #include <boost/multiprecision/float128.hpp>
 #include <iostream>
@@ -53,4 +52,3 @@ private:
     float128 upper_bound;
 };
 
-#endif // INTERVAL_H
