@@ -1,6 +1,6 @@
 #include <iostream>
 #include <boost/multiprecision/float128.hpp>
-#include <interval.h>
+#include <interval.hpp>
 #include <interpolation.hpp>
 #include <vector>
 
@@ -12,8 +12,8 @@ int main() {
   float128 x_val = 117; 
 
 
-  cout << fixed << setprecision(20); // Ustawienie precyzji wyjścia
-  // Obliczanie wartości Lagrange'a
+  cout << fixed << setprecision(20);
+
   auto [result_lagrange, status_lagrange] = lagrange_interpolation(x, y, x_val);
   if (status_lagrange != 0) {
       cout << "Blad w obliczeniach Lagrange'a. Status: " << status_lagrange << endl;
@@ -21,7 +21,6 @@ int main() {
       cout << "Wartosc wielomianu Lagrange'a w punkcie " << x_val << " to: " << result_lagrange << endl;
   }
 
-  // Obliczanie wartości Nevile'a
   auto [result_neville, status_neville] = neville_interpolation(x, y, x_val);
   if (status_neville != 0) {
       cout << "Blad w obliczeniach Nevile'a. Status: " << status_neville << endl;
