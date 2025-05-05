@@ -1,22 +1,32 @@
 #pragma once
 
-#include <boost/multiprecision/float128.hpp>
+#include <quadmath.h>   // dla __float128
+#include <limits>
 #include <iostream>
 #include <string>
+#include <cmath>
 
-using namespace boost::multiprecision;
+#ifndef INFINITY
+#define INFINITY __builtin_inff()
+#endif
+
 using namespace std;
 
 class Interval {
 public:
-    Interval(const float128& lower, const float128& upper)
+    Interval(const __float128& lower, const __float128& upper)
         : lower_bound(lower), upper_bound(upper) {}
 
-    float128 lower() const { return lower_bound; }
-    float128 upper() const { return upper_bound; }
+    __float128 lower() const { return lower_bound; }
+    __float128 upper() const { return upper_bound; }
 
     void print() const {
-        std::cout << "[" << lower_bound << ", " << upper_bound << "]" << std::endl;
+        char buffer[128];
+        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", lower_bound);
+        std::cout << "[" << buffer << ", ";
+
+        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", upper_bound);
+        std::cout << buffer << "]" << std::endl;
     }
 
     Interval operator+(const Interval& other) const {
@@ -28,9 +38,9 @@ public:
     }
 
     Interval operator*(const Interval& other) const {
-        float128 l = std::min({lower_bound * other.lower(), lower_bound * other.upper(),
+        __float128 l = std::min({lower_bound * other.lower(), lower_bound * other.upper(),
                                upper_bound * other.lower(), upper_bound * other.upper()});
-        float128 u = std::max({lower_bound * other.lower(), lower_bound * other.upper(),
+        __float128 u = std::max({lower_bound * other.lower(), lower_bound * other.upper(),
                                upper_bound * other.lower(), upper_bound * other.upper()});
         return Interval(l, u);
     }
@@ -40,15 +50,28 @@ public:
             throw std::invalid_argument("Nie można dzielić przez przedział, który zawiera 0.");
         }
 
-        float128 l = std::min({lower_bound / other.lower(), lower_bound / other.upper(),
+        __float128 l = std::min({lower_bound / other.lower(), lower_bound / other.upper(),
                                upper_bound / other.lower(), upper_bound / other.upper()});
-        float128 u = std::max({lower_bound / other.lower(), lower_bound / other.upper(),
+        __float128 u = std::max({lower_bound / other.lower(), lower_bound / other.upper(),
                                upper_bound / other.lower(), upper_bound / other.upper()});
         return Interval(l, u);
     }
 
 private:
-    float128 lower_bound;
-    float128 upper_bound;
+    __float128 lower_bound;
+    __float128 upper_bound;
 };
 
+Interval string_to_interval(const std::string& str) {
+    size_t pos = str.find(',');
+    if (pos == std::string::npos) {
+        throw std::invalid_argument("Niepoprawny format przedziału. Użyj formatu 'lower,upper'.");
+    }
+
+    
+
+    __float128 lower = strtoflt128(str.substr(0, pos).c_str(), NULL);
+    __float128 upper = strtoflt128(str.substr(pos + 1).c_str(), NULL);
+
+    return Interval(lower, upper);
+}
