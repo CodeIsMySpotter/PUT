@@ -17,6 +17,9 @@ class Interval {
 public:
     Interval(const __float128& lower, const __float128& upper)
         : lower_bound(lower), upper_bound(upper) {}
+    
+    Interval(__float128 value)
+    : lower_bound(value), upper_bound(value) {}
 
     __float128 lower() const { return lower_bound; }
     __float128 upper() const { return upper_bound; }
@@ -79,6 +82,31 @@ public:
     
         return Interval(l, u);
     }
+    
+    Interval& operator+=(const Interval& other) {
+        *this = *this + other;
+        return *this;
+    }
+    
+    Interval& operator-=(const Interval& other) {
+        *this = *this - other;
+        return *this;
+    }
+    
+    Interval& operator*=(const Interval& other) {
+        *this = *this * other;
+        return *this;
+    }
+    
+    Interval& operator/=(const Interval& other) {
+        *this = *this / other;
+        return *this;
+    }
+
+    bool operator==(const Interval& other) const {
+        return lower_bound == other.lower_bound && upper_bound == other.upper_bound;
+    }
+    
 
 private:
     __float128 lower_bound;

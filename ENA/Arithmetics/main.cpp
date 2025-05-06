@@ -2,18 +2,31 @@
 #include <iostream>
 #include <cmath>
 #include <interval.hpp>
+#include <interpolation.hpp>
+#include <vector>
 
 using namespace std;
 
 
 int main() {
 
-    string str_value = "123.456"; // Przykładowy string
+    vector<Interval> X = {
+        string_to_interval("1.0"),
+        string_to_interval("2.0"),
+        string_to_interval("3.0"),
+        string_to_interval("4.0"),
+    };
+    vector<Interval> Y = {
+        string_to_interval("1.0"),
+        string_to_interval("2.0"),
+        string_to_interval("3.0"),
+        string_to_interval("4.0"),
+    };
+    Interval x = string_to_interval("5.0");
 
-    Interval interval = string_to_interval(str_value);
-    interval.print();
-
-   
+    auto [RESULT, ERROR] = lagrange_interpolation<Interval>(X, Y, x);
+    cout << "Wynik: ";
+    RESULT.print();
 
 
     return 0;

@@ -6,15 +6,20 @@
 
 template<typename T>
 int check_conditions(const std::vector<T>& x) {
-    std::set<T> unique_elements(x.begin(), x.end());
-    if (unique_elements.size() != x.size()) {
-        return 2;  // duplikaty
-    }
     if (x.size() < 1) {
-        return 1;  // za mało punktów
+        return 1;  
     }
+    for (size_t i = 0; i < x.size(); ++i) {
+        for (size_t j = i + 1; j < x.size(); ++j) {
+            if (x[i] == x[j]) {
+                return 2;  
+            }
+        }
+    }
+
     return 0;  // ok
 }
+
 
 template<typename T>
 std::tuple<T, int> lagrange_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_val) {
@@ -25,7 +30,7 @@ std::tuple<T, int> lagrange_interpolation(const std::vector<T>& x, const std::ve
         return std::make_tuple(T(0), 2);
     }
 
-    T result = 0;
+    T result = T(0);
     size_t n = x.size();
     for (size_t i = 0; i < n; ++i) {
         T term = y[i];
