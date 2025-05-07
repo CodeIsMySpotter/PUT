@@ -59,11 +59,19 @@ def create_option_button_I():
   return button
 
 
+
+  
+
+
 def create_option_button_II():
   button = QPushButton()
   button.setObjectName("option-button-II")
   button.setFixedWidth(BUTTON_WIDTH)
   button.setFixedHeight(BUTTON_HEIGHT)
+
+  button.setIcon(QIcon("./AppComponents/icons/real_inter.png"))
+  button.setIconSize(PyQt5.QtCore.QSize(60, 60))    
+
   button.setStyleSheet(f"""
       #option-button-II{{
           background-color: {CATPPUCCIN["base"]};
@@ -86,6 +94,10 @@ def creater_option_button_III():
   button.setObjectName("option-button-III")
   button.setFixedWidth(BUTTON_WIDTH)
   button.setFixedHeight(BUTTON_HEIGHT)
+
+  button.setIcon(QIcon("./AppComponents/icons/inter.png"))
+  button.setIconSize(PyQt5.QtCore.QSize(60, 60))  
+
   button.setStyleSheet(f"""
       #option-button-III{{
           background-color: {CATPPUCCIN["base"]};

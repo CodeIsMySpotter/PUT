@@ -5,7 +5,7 @@ import sys
 
 from AppComponents.Colors import *
 from AppComponents.NavBar import create_navbar
-from AppComponents.OptionBar import create_option_bar
+from AppComponents.OptionBar import *
 
 class Application(QMainWindow):
     def __init__(self):
@@ -13,6 +13,10 @@ class Application(QMainWindow):
 
         self.background_widget = None
         self.main_widget = None
+        
+        self.option_I = None
+        self.option_II = None
+        self.option_III = None
 
         self.window_width = 1400
         self.window_height = 800
@@ -50,14 +54,33 @@ class Application(QMainWindow):
         """)
 
         navbar = create_navbar(self)
-        left_navbar = create_option_bar(self)
+        option_bar = self.create_option_bar()
+        
+
+
+
 
         main_vertical_layout.addWidget(navbar)
 
-        main_horizontal_layout.addWidget(left_navbar)
+        main_horizontal_layout.addWidget(option_bar)
         main_horizontal_layout.addStretch()
         main_vertical_layout.addLayout(main_horizontal_layout)
         self.background_widget.setLayout(main_vertical_layout)
+
+    def create_option_bar(self):
+
+        option_bar = create_option_bar(self)
+        option_bar.layout.addStretch()
+        option_bar.layout.addWidget(create_option_button_I())
+        option_bar.layout.addWidget(create_option_button_II())
+        option_bar.layout.addWidget(creater_option_button_III())
+        option_bar.layout.addStretch()
+
+        self.option_I = create_option_button_I()
+        self.option_II = create_option_button_II()
+        self.option_III = creater_option_button_III()
+
+    
 
 
     def center_window(self):
