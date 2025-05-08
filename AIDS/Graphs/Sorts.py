@@ -30,7 +30,7 @@ def dfs_sort_matrix(matrix):
     return result[::-1]
 
 
-def dfs_sort_gmatrix(matrix, V):
+def dfs_sort_gmatrix(matrix):
     n = len(matrix)
     visited = [0] * (n + 1)
     result = []
@@ -38,6 +38,9 @@ def dfs_sort_gmatrix(matrix, V):
 
     def dfs(u):
         nonlocal has_cycle
+        if matrix[u][-1] != 0:
+            has_cycle = True
+            return
         if visited[u] == 1:
             has_cycle = True
             return
@@ -46,9 +49,8 @@ def dfs_sort_gmatrix(matrix, V):
         visited[u] = 1
         for v in range(1, n):
             val = matrix[u][v]
-            if 1 <= val <= V:
+            if 1 <= val < n:
                 dfs(v)
-
         visited[u] = 2
         result.append(u)
 
@@ -56,6 +58,7 @@ def dfs_sort_gmatrix(matrix, V):
         if visited[i] == 0:
             dfs(i)
 
+    
     if has_cycle:
         print("DFS sort: Graf zawiera cykl!")
         return None

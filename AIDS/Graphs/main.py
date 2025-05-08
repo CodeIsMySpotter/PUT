@@ -19,7 +19,7 @@ print()
 print_matrix(gmatrix)
 print()
 
-print(dfs_sort_gmatrix(gmatrix, n))
+print(dfs_sort_gmatrix(gmatrix))
 print(dfs_sort_matrix(matrix))
 print(kahn_sort_gmatrix(matrix, n))
 print(kahn_sort_matrix(matrix))
