@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 def build_adjacency_matrix(n, edges):
-    matrix = [[0] * n for _ in range(n+1)]
+    matrix = [[0] * (n+1) for _ in range(n+1)]
     for u, v in edges:
         matrix[u][v] = 1
     return matrix
@@ -14,7 +14,6 @@ def build_graph_matrix(n, edges):
     pred_list = defaultdict(list)
     nonincident = {}
     cycle_list, bool_cycle_list = find_cycles_double(edges)
-
 
     for u, v in edges:
         if u != v and v not in cycle_list[u]:
@@ -47,19 +46,13 @@ def build_graph_matrix(n, edges):
     for vi in range(1, n+1):
         if len(adj_list[vi]) == 0:
             adj_list[vi] = [0]
-
-
-
-    
     
     index_nonincident = {key: 1 for key in nonincident}
     index_adj = {key: 1 for key in adj_list}
     index_pred = {key: 1 for key in pred_list}
-   
     
     for vi in range(1, n+1):
         
-
         matrix[vi][n+1] = adj_list[vi][0] if len(adj_list[vi]) > 0  else 0
         matrix[vi][n+2] = pred_list[vi][0] if len(pred_list[vi]) > 0 else 0
         matrix[vi][n+3] = nonincident[vi][0] if len(nonincident[vi]) > 0 else 0
@@ -67,8 +60,10 @@ def build_graph_matrix(n, edges):
         indexB = 0   
 
         for vj in range(1, n+1):
+            
             vi_vj = False
             vj_vi = False
+
             if (vi, vj) in edges:
                 vi_vj = True
             if (vj, vi) in edges:
@@ -78,26 +73,22 @@ def build_graph_matrix(n, edges):
                 index = index_adj[vi]
                 matrix[vi][vj] = adj_list[vi][index] if index < len(adj_list[vi]) else adj_list[vi][-1]
                 index_adj[vi] += 1
+
             elif vj_vi:
                 index = index_pred[vi]
                 matrix[vi][vj] = pred_list[vi][index] + n if index < len(pred_list[vi]) else pred_list[vi][-1] + n
                 index_pred[vi] += 1
+
             elif not vi_vj:
                 index = index_nonincident[vi]
                 matrix[vi][vj] = -nonincident[vi][index] if index < len(nonincident[vi]) else -nonincident[vi][-1]
                 index_nonincident[vi] += 1
-            if bool_cycle_list[(vi, vj)]:
-                print(indexB)
-                matrix[vi][vj] = cycle_list[vi][indexB] + 2*n if indexB < len(cycle_list[vi]) else cycle_list[vi][-1] + 2*n
 
-            print("=================")
-            print(index_adj)
-            print(index_pred)
-            print(index_nonincident)
+            if bool_cycle_list[(vi, vj)]:
+                matrix[vi][vj] = cycle_list[vi][indexB] + 2*n if indexB < len(cycle_list[vi]) else cycle_list[vi][-1] + 2*n
 
             indexB += 1
             
-    print()
     return matrix
 
 

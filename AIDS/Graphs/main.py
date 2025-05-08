@@ -10,19 +10,16 @@ def print_matrix(matrix):
     for row in cut_matrix:
         print(' '.join(f'{value:>{max_width}}' for value in row))
 
-edges = [
-    (1, 2),
-    (2, 4),
-    (2, 5),
-    (3, 2),
-    (3, 1),
-    (4, 3),
-    (5, 4),
-    (5, 1)
-
-]
-n = 5
+edges, n = read_from_file()
+matrix = build_adjacency_matrix(n, edges)
+gmatrix = build_graph_matrix(n, edges)
 
 
-matrix = build_graph_matrix(n, edges)
-print_matrix(matrix)
+print()
+print_matrix(gmatrix)
+print()
+
+print(dfs_sort_gmatrix(gmatrix, n))
+print(dfs_sort_matrix(matrix))
+print(kahn_sort_gmatrix(matrix, n))
+print(kahn_sort_matrix(matrix))
