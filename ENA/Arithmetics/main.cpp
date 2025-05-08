@@ -7,21 +7,21 @@
 
 using namespace std;
 
-void floating_point(int num_count){
-    std::vector<__float128> X;
+void floating_point(int num_count, char* argv[]){
+    std::vector<f128> X;
     for (int i = 0; i < num_count; ++i) {
-        int num = strtoflt128(argv[3 + i]);
+        f128 num = strtoflt128(argv[3 + i], NULL);
         X.push_back(num);
     }
 
-    std::vector<__float128> Y;
+    std::vector<f128> Y;
     for (int i = 0; i < num_count; ++i) {
-        int num = strtoflt128(argv[3 + num_count + i]);
+        f128 num = strtoflt128(argv[3 + num_count + i], NULL);
         Y.push_back(num);
     }
 
-    __float128 x_val = strtoflt128(argv[3 + 2 * num_count]);
-    __float128 result = neville_interpolation(X, Y, x_val);
+    f128 x_val = strtoflt128(argv[3 + 2 * num_count], NULL);
+    auto [result, st] = neville_interpolation(X, Y, x_val);
     
     char buffer[128];
     quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", result);
@@ -47,10 +47,10 @@ int main(int argc, char* argv[]) {
     }
 
     string cmd = argv[1];
-    string num_count = atoi(argv[2]);
+    int num_count = atoi(argv[2]);
 
     if(cmd=="1")  {
-        floating_point(num_count);
+        floating_point(num_count, argv);
     }else if (cmd=="2"){
         floating_point_to_interval();
     }else if (cmd=="3"){

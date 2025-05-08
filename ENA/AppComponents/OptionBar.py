@@ -7,30 +7,7 @@ from AppComponents.Colors import *
 
 BUTTON_WIDTH = 100
 BUTTON_HEIGHT = 100
-
-
-def create_option_bar(parent):
-  option_bar = QWidget()
-  option_bar.setFixedWidth(300)
-  option_bar.setFixedHeight(parent.window_height- 180)
-
-
-  option_bar_layout = QVBoxLayout(option_bar)
-  option_bar_layout.setContentsMargins(20, 10, 10, 10)
-  option_bar_layout.setSpacing(20)
-
-
-  option_bar_layout.addStretch()
-  option_bar_layout.addWidget(create_option_button_I())
-  option_bar_layout.addWidget(create_option_button_II())
-  option_bar_layout.addWidget(creater_option_button_III())
-  option_bar_layout.addStretch()
-
-
-  option_bar.setObjectName("option-bar")
-
-  
-  return option_bar
+ICON_SIZE = 100
 
 
 
@@ -41,7 +18,7 @@ def create_option_button_I():
   button.setFixedHeight(BUTTON_HEIGHT)
 
   button.setIcon(QIcon("./AppComponents/icons/real_logo.png"))
-  button.setIconSize(PyQt5.QtCore.QSize(60, 60))
+  button.setIconSize(PyQt5.QtCore.QSize(ICON_SIZE, ICON_SIZE))
 
   button.setStyleSheet(f"""
       #option-button-I{{
@@ -70,7 +47,7 @@ def create_option_button_II():
   button.setFixedHeight(BUTTON_HEIGHT)
 
   button.setIcon(QIcon("./AppComponents/icons/real_inter.png"))
-  button.setIconSize(PyQt5.QtCore.QSize(60, 60))    
+  button.setIconSize(PyQt5.QtCore.QSize(ICON_SIZE, ICON_SIZE))    
 
   button.setStyleSheet(f"""
       #option-button-II{{
@@ -96,7 +73,7 @@ def creater_option_button_III():
   button.setFixedHeight(BUTTON_HEIGHT)
 
   button.setIcon(QIcon("./AppComponents/icons/inter.png"))
-  button.setIconSize(PyQt5.QtCore.QSize(60, 60))  
+  button.setIconSize(PyQt5.QtCore.QSize(ICON_SIZE, ICON_SIZE))  
 
   button.setStyleSheet(f"""
       #option-button-III{{
