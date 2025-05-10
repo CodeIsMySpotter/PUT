@@ -99,8 +99,7 @@ def kahn_sort_gmatrix(matrix, V):
             val = matrix[u][v]
             if 1 <= val <= V:
                 in_degree[v] += 1  
-            elif V + 1 <= val <= 2 * V:
-                in_degree[u] += 1  
+            
 
     queue = [i for i in range(1, n) if in_degree[i] == 0]
     result = []
