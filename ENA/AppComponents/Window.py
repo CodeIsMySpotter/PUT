@@ -152,7 +152,7 @@ class Application(QMainWindow):
             #optype-label{{
                 font-size: 28px;
                 font-weight: bold;
-                color: {CATPPUCCIN['text']};
+                color: {CATPPUCCIN['red']};
                 background-color: {CATPPUCCIN['base']};
                 padding: 10px;
             }}
@@ -214,7 +214,7 @@ class Application(QMainWindow):
         self.y_input.setFixedSize(300, 65)
         self.point_input.setFixedSize(300, 65)
         calc_button.setFixedSize(300, 65)
-        self.output_field.setFixedSize(self.central_widget.width() - 350, 450)
+        self.output_field.setFixedSize(self.central_widget.width() - 350, 475)
 
         self.x_input.setObjectName("input")
         self.y_input.setObjectName("input")
@@ -224,39 +224,39 @@ class Application(QMainWindow):
         self.x_input.setStyleSheet(f"""
             #input {{
                 color: {CATPPUCCIN['text']};
-                border: 2px solid {CATPPUCCIN['text']};
+                border: 4px solid {CATPPUCCIN['text']};
                 border-radius: 15px;
                 padding: 6px;
                 font-size: 14px;
             }}
             #input:focus {{
-                border: 2px solid {CATPPUCCIN['red']};
+                border: 4px solid {CATPPUCCIN['red']};
             }}
         """)
 
         self.y_input.setStyleSheet(f"""
             #input {{
                 color: {CATPPUCCIN['text']};
-                border: 2px solid {CATPPUCCIN['text']};
+                border: 4px solid {CATPPUCCIN['text']};
                 border-radius: 15px;
                 padding: 6px;
                 font-size: 14px;
             }}
             #input:focus {{
-                border: 2px solid {CATPPUCCIN['red']};
+                border: 4px solid {CATPPUCCIN['red']};
             }}
         """)
 
         self.point_input.setStyleSheet(f"""
             #input {{
                 color: {CATPPUCCIN['text']};
-                border: 2px solid {CATPPUCCIN['text']};
+                border: 4px solid {CATPPUCCIN['text']};
                 border-radius: 15px;
                 padding: 6px;
                 font-size: 14px;
             }}
             #input:focus {{
-                border: 2px solid {CATPPUCCIN['red']};
+                border: 4px solid {CATPPUCCIN['red']};
             }}
         """)
 
@@ -267,7 +267,7 @@ class Application(QMainWindow):
                 padding: 6px;
                 background-color: {CATPPUCCIN["base"]};
                 border-radius: 15px;
-                border: 2px solid {CATPPUCCIN["red"]};
+                border: 4px solid {CATPPUCCIN["red"]};
                 font-weight: bold;
                 font-size: 16px;
             }}
@@ -279,7 +279,7 @@ class Application(QMainWindow):
         self.output_field.setStyleSheet(f"""
             #output-field{{
                 border-radius: 15px;
-                border: 2px solid {CATPPUCCIN['text']}
+                border: 4px solid {CATPPUCCIN['text']}
             }}
         """)
 
