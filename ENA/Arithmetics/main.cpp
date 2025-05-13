@@ -48,6 +48,7 @@ void floating_point(int num_count, char* argv[]){
 
     auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
     auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
+    auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
 
     cout << "Lagrange Interpolation Result: ";
     char buffer[128];
@@ -56,6 +57,10 @@ void floating_point(int num_count, char* argv[]){
 
     cout << "Neville Interpolation Result: ";
     quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result2);
+    cout << buffer << endl;
+
+    cout << "Lagrange Interpolation Weighted Result: ";
+    quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result3);
     cout << buffer << endl;
 
     
@@ -99,9 +104,11 @@ void floating_point_to_interval(int num_count, char* argv[]){
 
     auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
     auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
+    auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
     cout << "Lagrange Interpolation Result: " << result << endl;
     cout << "Neville Interpolation Result: " << result2 << endl;
+    cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
     
 
 
@@ -109,13 +116,6 @@ void floating_point_to_interval(int num_count, char* argv[]){
     
 }
 
-std::pair<std::string, std::string> split_by_space(const std::string& input) {
-    size_t pos = input.find(' ');
-    if (pos == std::string::npos) {
-        return {input, ""};
-    }
-    return {input.substr(0, pos), input.substr(pos + 1)};
-}
 
 
 void interval_to_interval(int num_count, char* argv[]){
@@ -126,14 +126,15 @@ void interval_to_interval(int num_count, char* argv[]){
     }
     vector<Interval> x_numbers;
     vector<Interval> y_numbers;
-    string line;
+    string a, b;
 
     for(int i = 0; i < num_count; ++i) {
-        if (input_file>>line) {
-            auto [left, right] = split_by_space(line);
-            f128 number1 = strtoflt128(left.c_str(), NULL);
-            f128 number2 = strtoflt128(right.c_str(), NULL);
-            x_numbers.push_back(Interval(number1, number2));
+        if (input_file>>a>>b) {
+            f128 number1 = strtoflt128(a.c_str(), NULL);
+            f128 number2 = strtoflt128(b.c_str(), NULL);
+            Interval interval = Interval(number1, number2);
+
+            x_numbers.push_back(interval);
         } else {
             cout << "Error reading line " << i + 1 << endl;
             break;
@@ -141,29 +142,32 @@ void interval_to_interval(int num_count, char* argv[]){
     }
 
     for(int i = 0; i < num_count; ++i) {
-        if(input_file>>line) {
-            auto [left, right] = split_by_space(line);
-            f128 number1 = strtoflt128(left.c_str(), NULL);
-            f128 number2 = strtoflt128(right.c_str(), NULL);
-            y_numbers.push_back(Interval(number1, number2));
+        if(input_file>>a>>b) {
+            f128 number1 = strtoflt128(a.c_str(), NULL);
+            f128 number2 = strtoflt128(b.c_str(), NULL);
+            Interval interval = Interval(number1, number2);
+
+            y_numbers.push_back(interval);
         } else {
             cout << "Error reading line " << i + 1 << endl;
             break;
         }
     }
     
-    input_file >> line;
-    auto [left, right] = split_by_space(line);
-    f128 number1 = strtoflt128(left.c_str(), NULL);
-    f128 number2 = strtoflt128(right.c_str(), NULL);
+    input_file >> a >> b;
+    
+    f128 number1 = strtoflt128(a.c_str(), NULL);
+    f128 number2 = strtoflt128(b.c_str(), NULL);
     Interval x_val = Interval(number1, number2);
     input_file.close();
 
     auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
     auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
+    auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
     cout << "Lagrange Interpolation Result: " << result << endl;
     cout << "Neville Interpolation Result: " << result2 << endl;
+    cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
 }
 
 

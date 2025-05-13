@@ -109,13 +109,49 @@ std::tuple<T, int> lagrange_interpolation(const std::vector<T>& x, const std::ve
         T term = y[i];
         for (size_t j = 0; j < n; ++j) {
             if (i != j) {
-                term *= (x_val - x[j]) / (x[i] - x[j]);
+                T numerator = x_val - x[j];
+                T denominator = x[i] - x[j];
+                T fraction = numerator / denominator;
+                term = term * fraction;
             }
         }
         result += term;
     }
     return std::make_tuple(result, 0);
 }
+
+template<typename T>
+std::tuple<T, int> lagrange_interpolation_weighted(const std::vector<T>& x, const std::vector<T>& y, T x_val) {
+    int st = check_conditions(x);
+    if (st == 1) return {T(0), 1};
+    if (st == 2) return {T(0), 2};
+
+    size_t n = x.size();
+    std::vector<T> weights(n, T(1));
+
+    // Oblicz wagi: w_i = 1 / Π_{j ≠ i} (x_i - x_j)
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = 0; j < n; ++j) {
+            if (i != j)
+                weights[i] = weights[i] * (x[i] - x[j]);
+        }
+        weights[i] = T(1) / weights[i];
+    }
+
+    // Oblicz licznik i mianownik sumy
+    T numerator = T(0);
+    T denominator = T(0);
+
+    for (size_t i = 0; i < n; ++i) {
+        T term = weights[i] / (x_val - x[i]);
+        numerator += term * y[i];
+        denominator += term;
+    }
+
+    T result = numerator / denominator;
+    return {result, 0};
+}
+
 
 template<typename T>
 std::tuple<T, int> neville_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_val) {

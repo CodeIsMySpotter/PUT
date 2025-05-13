@@ -36,15 +36,15 @@ public:
     }
 
     Interval operator+(const Interval& other) const {
-    fesetround(FE_DOWNWARD);
-    __float128 lo = lower_bound + other.lower();
+        fesetround(FE_DOWNWARD);
+        __float128 lo = lower_bound + other.lower();
+        
+        fesetround(FE_UPWARD);
+        __float128 hi = upper_bound + other.upper();
 
-    fesetround(FE_UPWARD);
-    __float128 hi = upper_bound + other.upper();
-
-    fesetround(FE_TONEAREST);
-    return Interval(lo, hi);
-}
+        fesetround(FE_TONEAREST);
+        return Interval(lo, hi);
+    }
 
 Interval operator-(const Interval& other) const {
     fesetround(FE_DOWNWARD);

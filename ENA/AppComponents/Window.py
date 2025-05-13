@@ -400,6 +400,40 @@ class Application(QMainWindow):
             args = [str(self.op_signal), str(len(x_args))]
             self.process.start("./Arithmetics/main.exe", args)
 
+        elif self.op_signal == 3:
+            x_args = self.x_input.text().split(";")
+            y_args = self.y_input.text().split(";")
+            point = self.point_input.text()
+            point = point.split(",")
+            point = [point[0].replace("[", ""), point[1].replace("]", "")]
+
+            x_args = [x.replace("[", "").replace("]", "") for x in x_args]
+            y_args = [y.replace("[", "").replace("]", "") for y in y_args]
+
+            x_args = [x.split(",") for x in x_args]
+            y_args = [y.split(",") for y in y_args]
+
+            
+
+            if len(x_args) != len(y_args):
+                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> X and Y values must be the same </span>")
+                return
+
+            with open("Arithmetics/data.txt", "w") as f:
+                for i in range(len(x_args)):
+                    f.write(f"{x_args[i][0]} {x_args[i][1]}\n")
+                for i in range(len(y_args)):
+                    f.write(f"{y_args[i][0]} {y_args[i][1]}\n")
+                f.write(f"{point[0]} {point[1]}\n")
+
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Output: </span>")
+            self.process = QProcess()
+            self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
+            self.process.readyReadStandardOutput.connect(self.handle_stdout)
+            self.process.readyReadStandardError.connect(self.handle_stderr)
+            self.process.finished.connect(self.handle_finish)
+            args = [str(self.op_signal), str(len(x_args))]
+            self.process.start("./Arithmetics/main.exe", args)
         
         
 
