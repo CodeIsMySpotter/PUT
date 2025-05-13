@@ -278,6 +278,10 @@ class Application(QMainWindow):
 
         self.output_field.setStyleSheet(f"""
             #output-field{{
+                color: {CATPPUCCIN['text']};
+                font-size: 16px;
+                font-weight: bold;
+                padding: 6px;
                 border-radius: 15px;
                 border: 4px solid {CATPPUCCIN['text']}
             }}
@@ -287,6 +291,8 @@ class Application(QMainWindow):
         self.y_input.setPlaceholderText(self.input_I)
         self.point_input.setPlaceholderText(self.point_input_I)
         self.output_field.setReadOnly(True)
+        calc_button.clicked.connect(self.callback_cal)
+        self.output_field.append("Output will be shown here")
 
         input_fields_vertical_layout.addWidget(X_label, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         input_fields_vertical_layout.addWidget(self.x_input, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -332,14 +338,69 @@ class Application(QMainWindow):
 
     def callback_cal(self):
         self.output_field.clear()
-        self.process = QProcess()
-        self.process.start("./Arithmetics/calc.exe")
+        self.process_arguments()
+       
 
     def process_arguments(self):
-        x_args = self.x_input.text()
-        y_args = self.y_input.text()
-        point = self.point_input.text()
+        
+        
+        if self.x_input.text() == "" or self.y_input.text() == "" or self.point_input.text() == "":
+            print(1)
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> Please fill all the gaps </span>")
+            return
 
+        if self.op_signal == 1:
+            x_args = self.x_input.text().split(";")
+            y_args = self.y_input.text().split(";")
+            point = self.point_input.text()
+
+            if len(x_args) != len(y_args):
+                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> X and Y values must be the same length</span>")
+                return
+
+            with open("Arithmetics/data.txt", "w") as f:
+                for i in range(len(x_args)):
+                    f.write(f"{x_args[i]}\n")
+                for i in range(len(y_args)):
+                    f.write(f"{y_args[i]}\n")
+                f.write(f"{point}\n")
+            
+            
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Output: </span>")
+            self.process = QProcess()
+            self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
+            self.process.readyReadStandardOutput.connect(self.handle_stdout)
+            self.process.readyReadStandardError.connect(self.handle_stderr)
+            self.process.finished.connect(self.handle_finish)
+            args = [str(self.op_signal), str(len(x_args))]
+            self.process.start("./Arithmetics/main.exe", args)
+
+        elif self.op_signal == 2:
+            x_args = self.x_input.text().split(";")
+            y_args = self.y_input.text().split(";")
+            point = self.point_input.text()
+
+            if len(x_args) != len(y_args):
+                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> X and Y values must be the same </span>")
+                return
+
+            with open("Arithmetics/data.txt", "w") as f:
+                for i in range(len(x_args)):
+                    f.write(f"{x_args[i]}\n")
+                for i in range(len(y_args)):
+                    f.write(f"{y_args[i]}\n")
+                f.write(f"{point}\n")
+
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Output: </span>")
+            self.process = QProcess()
+            self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
+            self.process.readyReadStandardOutput.connect(self.handle_stdout)
+            self.process.readyReadStandardError.connect(self.handle_stderr)
+            self.process.finished.connect(self.handle_finish)
+            args = [str(self.op_signal), str(len(x_args))]
+            self.process.start("./Arithmetics/main.exe", args)
+
+        
         
 
     def handle_stdout(self):
@@ -350,10 +411,10 @@ class Application(QMainWindow):
     def handle_stderr(self):
         data = self.process.readAllStandardError()
         text = bytes(data).decode('utf8')
-        self.output_field.append(f"<span style='color:red;'>{text}</span>")
+        self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'>{text}</span>")
 
     def handle_finish(self):
-        self.output_field.append("Program finished succesfully")
+        self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Program finished succesfully </span>")
     
 
 

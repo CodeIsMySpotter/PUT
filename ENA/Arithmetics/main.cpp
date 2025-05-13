@@ -4,36 +4,166 @@
 #include <interval.hpp>
 #include <interpolation.hpp>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
 void floating_point(int num_count, char* argv[]){
-    std::vector<f128> X;
-    for (int i = 0; i < num_count; ++i) {
-        f128 num = strtoflt128(argv[3 + i], NULL);
-        X.push_back(num);
+    fstream input_file("Arithmetics/data.txt", ios::in);
+
+    if (!input_file) {
+        cout << "Error opening file." << endl;
+        return;
     }
 
-    std::vector<f128> Y;
-    for (int i = 0; i < num_count; ++i) {
-        f128 num = strtoflt128(argv[3 + num_count + i], NULL);
-        Y.push_back(num);
+    vector<f128> x_numbers;
+    vector<f128> y_numbers;
+
+    string line;
+
+    for(int i = 0; i < num_count; ++i) {
+        if (input_file>>line) {
+            f128 number = strtoflt128(line.c_str(), NULL);
+            x_numbers.push_back(number);
+        } else {
+            cout << "Error reading line " << i + 1 << endl;
+            break;
+        }
     }
 
-    f128 x_val = strtoflt128(argv[3 + 2 * num_count], NULL);
-    auto [result, st] = neville_interpolation(X, Y, x_val);
-    
+    for(int i = 0; i < num_count; ++i) {
+        if(input_file>>line) {
+            f128 number = strtoflt128(line.c_str(), NULL);
+            y_numbers.push_back(number);
+        } else {
+            cout << "Error reading line " << i + 1 << endl;
+            break;
+        }
+    }
+
+    f128 x_val;
+    input_file >> line;
+    x_val = strtoflt128(line.c_str(), NULL);
+    input_file.close();
+
+    auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
+    auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
+
+    cout << "Lagrange Interpolation Result: ";
     char buffer[128];
-    quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", result);
-    std::cout << buffer << std::endl;
+    quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result);
+    cout << buffer << endl;
+
+    cout << "Neville Interpolation Result: ";
+    quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result2);
+    cout << buffer << endl;
+
+    
+}   
+
+
+
+void floating_point_to_interval(int num_count, char* argv[]){
+    fstream input_file("Arithmetics/data.txt", ios::in);
+    if (!input_file) {
+        cout << "Error opening file." << endl;
+        return;
+    }
+    vector<Interval> x_numbers;
+    vector<Interval> y_numbers;
+    string line;
+
+    for(int i = 0; i < num_count; ++i) {
+        if (input_file>>line) {
+            f128 number = strtoflt128(line.c_str(), NULL);
+            x_numbers.push_back(string_to_interval(line));
+        } else {
+            cout << "Error reading line " << i + 1 << endl;
+            break;
+        }
+    }
+
+    for(int i = 0; i < num_count; ++i) {
+        if(input_file>>line) {
+            f128 number = strtoflt128(line.c_str(), NULL);
+            y_numbers.push_back(string_to_interval(line));
+        } else {
+            cout << "Error reading line " << i + 1 << endl;
+            break;
+        }
+    }
+    
+    input_file >> line;
+    Interval x_val = string_to_interval(line);
+    input_file.close();
+
+    auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
+    auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
+    
+    cout << "Lagrange Interpolation Result: " << result << endl;
+    cout << "Neville Interpolation Result: " << result2 << endl;
+    
+
+
+  
+    
 }
 
-void floating_point_to_interval(){
-
+std::pair<std::string, std::string> split_by_space(const std::string& input) {
+    size_t pos = input.find(' ');
+    if (pos == std::string::npos) {
+        return {input, ""};
+    }
+    return {input.substr(0, pos), input.substr(pos + 1)};
 }
 
-void interval_to_interval(){
 
+void interval_to_interval(int num_count, char* argv[]){
+ fstream input_file("Arithmetics/data.txt", ios::in);
+    if (!input_file) {
+        cout << "Error opening file." << endl;
+        return;
+    }
+    vector<Interval> x_numbers;
+    vector<Interval> y_numbers;
+    string line;
+
+    for(int i = 0; i < num_count; ++i) {
+        if (input_file>>line) {
+            auto [left, right] = split_by_space(line);
+            f128 number1 = strtoflt128(left.c_str(), NULL);
+            f128 number2 = strtoflt128(right.c_str(), NULL);
+            x_numbers.push_back(Interval(number1, number2));
+        } else {
+            cout << "Error reading line " << i + 1 << endl;
+            break;
+        }
+    }
+
+    for(int i = 0; i < num_count; ++i) {
+        if(input_file>>line) {
+            auto [left, right] = split_by_space(line);
+            f128 number1 = strtoflt128(left.c_str(), NULL);
+            f128 number2 = strtoflt128(right.c_str(), NULL);
+            y_numbers.push_back(Interval(number1, number2));
+        } else {
+            cout << "Error reading line " << i + 1 << endl;
+            break;
+        }
+    }
+    
+    input_file >> line;
+    auto [left, right] = split_by_space(line);
+    f128 number1 = strtoflt128(left.c_str(), NULL);
+    f128 number2 = strtoflt128(right.c_str(), NULL);
+    Interval x_val = Interval(number1, number2);
+    input_file.close();
+
+    auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
+    auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
+    
+    cout << "Lagrange Interpolation Result: " << result << endl;
+    cout << "Neville Interpolation Result: " << result2 << endl;
 }
 
 
@@ -41,6 +171,12 @@ void interval_to_interval(){
 
 
 int main(int argc, char* argv[]) {
+
+    //Interval x = string_to_interval("0.1");
+    //cout << "Interval x: " << x << endl;
+
+
+
     if (argc < 2) {
         cout << "Usage: " << argv[0] << " <interval>" << endl;
         return 1;
@@ -52,9 +188,9 @@ int main(int argc, char* argv[]) {
     if(cmd=="1")  {
         floating_point(num_count, argv);
     }else if (cmd=="2"){
-        floating_point_to_interval();
+        floating_point_to_interval(num_count, argv);
     }else if (cmd=="3"){
-        interval_to_interval();
+        interval_to_interval(num_count, argv);
     }else{
         cout << "Invalid command. Use 1, 2, or 3." << endl;
         return 1;

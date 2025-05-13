@@ -36,53 +36,71 @@ public:
     }
 
     Interval operator+(const Interval& other) const {
-        return Interval(lower_bound + other.lower(), upper_bound + other.upper());
-    }
+    fesetround(FE_DOWNWARD);
+    __float128 lo = lower_bound + other.lower();
 
-    Interval operator-(const Interval& other) const {
-        return Interval(lower_bound - other.upper(), upper_bound - other.lower());
-    }
+    fesetround(FE_UPWARD);
+    __float128 hi = upper_bound + other.upper();
+
+    fesetround(FE_TONEAREST);
+    return Interval(lo, hi);
+}
+
+Interval operator-(const Interval& other) const {
+    fesetround(FE_DOWNWARD);
+    __float128 lo = lower_bound - other.upper();
+
+    fesetround(FE_UPWARD);
+    __float128 hi = upper_bound - other.lower();
+
+    fesetround(FE_TONEAREST);
+    return Interval(lo, hi);
+}
 
     Interval operator*(const Interval& other) const {
-        f128 a = lower_bound * other.lower();
-        f128 b = lower_bound * other.upper();
-        f128 c = upper_bound * other.lower();
-        f128 d = upper_bound * other.upper();
-    
-        f128 l = a;
-        if (b < l) l = b;
-        if (c < l) l = c;
-        if (d < l) l = d;
-    
-        f128 u = a;
-        if (b > u) u = b;
-        if (c > u) u = c;
-        if (d > u) u = d;
-    
-        return Interval(l, u);
+        fesetround(FE_DOWNWARD);
+        __float128 a = lower_bound * other.lower();
+        __float128 b = lower_bound * other.upper();
+        __float128 c = upper_bound * other.lower();
+        __float128 d = upper_bound * other.upper();
+
+        __float128 lo = fminq(fminq(a, b), fminq(c, d));
+
+        fesetround(FE_UPWARD);
+        a = lower_bound * other.lower();
+        b = lower_bound * other.upper();
+        c = upper_bound * other.lower();
+        d = upper_bound * other.upper();
+
+        __float128 hi = fmaxq(fmaxq(a, b), fmaxq(c, d));
+
+        fesetround(FE_TONEAREST);
+        return Interval(lo, hi);
     }
 
     Interval operator/(const Interval& other) const {
         if (other.lower() <= 0 && other.upper() >= 0) {
-            throw std::invalid_argument("Nie można dzielić przez przedział, który zawiera 0.");
+            throw std::invalid_argument("Nie można dzielić przez przedział zawierający zero.");
         }
-    
-        f128 a = lower_bound / other.lower();
-        f128 b = lower_bound / other.upper();
-        f128 c = upper_bound / other.lower();
-        f128 d = upper_bound / other.upper();
-    
-        f128 l = a;
-        if (b < l) l = b;
-        if (c < l) l = c;
-        if (d < l) l = d;
-    
-        f128 u = a;
-        if (b > u) u = b;
-        if (c > u) u = c;
-        if (d > u) u = d;
-    
-        return Interval(l, u);
+
+        fesetround(FE_DOWNWARD);
+        __float128 a = lower_bound / other.lower();
+        __float128 b = lower_bound / other.upper();
+        __float128 c = upper_bound / other.lower();
+        __float128 d = upper_bound / other.upper();
+
+        __float128 lo = fminq(fminq(a, b), fminq(c, d));
+
+        fesetround(FE_UPWARD);
+        a = lower_bound / other.lower();
+        b = lower_bound / other.upper();
+        c = upper_bound / other.lower();
+        d = upper_bound / other.upper();
+
+        __float128 hi = fmaxq(fmaxq(a, b), fmaxq(c, d));
+
+        fesetround(FE_TONEAREST);
+        return Interval(lo, hi);
     }
     
     Interval& operator+=(const Interval& other) {
@@ -107,6 +125,15 @@ public:
 
     bool operator==(const Interval& other) const {
         return lower_bound == other.lower_bound && upper_bound == other.upper_bound;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Interval& interval) {
+        char buffer[128];
+        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", interval.lower_bound);
+        os << "[" << "\n" << "    "<< buffer << ", " << "\n";
+        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", interval.upper_bound);
+        os << "    " << buffer << "\n" << "]";
+        return os;
     }
     
 
@@ -135,23 +162,18 @@ bool is_representable(const string& str) {
 }
 
 Interval string_to_interval(const string& str) {
-    size_t comma_pos = str.find('.');
-    if (comma_pos == string::npos) {
-        throw std::invalid_argument("Niepoprawny format przedzialu. Oczekiwano formatu 'a,b'.");
-    }
-
+   
 
     if(is_representable(str)){
         f128 value = strtoflt128(str.c_str(), NULL);
         return Interval(value, value);
     }
 
-    int old_round = fegetround();
     fesetround(FE_DOWNWARD);
     f128 lower_bound = strtoflt128(str.c_str(), NULL);
     fesetround(FE_UPWARD);
     f128 upper_bound = strtoflt128(str.c_str(), NULL);
-    fesetround(old_round);
+    fesetround(FE_TONEAREST);
 
     return Interval(lower_bound, upper_bound);
 }

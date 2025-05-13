@@ -4,6 +4,36 @@
 #include <tuple>
 #include <set>
 
+
+template<typename T>
+int check_conditions(const std::vector<T>& x) {
+    if (x.size() < 1) {
+        return 1;  
+    }
+    for (size_t i = 0; i < x.size(); ++i) {
+        for (size_t j = i + 1; j < x.size(); ++j) {
+            if (x[i] == x[j]) {
+                return 2;  
+            }
+        }
+    }
+
+    return 0;  
+}
+
+template <typename T>
+T evaluate_polynomial(const std::vector<T>& coefficients, T x) {
+    T result = 0;
+    T power_of_x = 1;
+
+    for (const T& coeff : coefficients) {
+        result += coeff * power_of_x;
+        power_of_x *= x;
+    }
+
+    return result;
+}
+
 template<typename T>
 std::vector<T> poly_multiply_scalar(const std::vector<T>& poly, T scalar) {
     std::vector<T> result(poly.size());
@@ -63,22 +93,6 @@ std::tuple<std::vector<T>, int> lagrange_polynomial(const std::vector<T>& x, con
     return std::make_tuple(result, 0);
 }
 
-template<typename T>
-int check_conditions(const std::vector<T>& x) {
-    if (x.size() < 1) {
-        return 1;  
-    }
-    for (size_t i = 0; i < x.size(); ++i) {
-        for (size_t j = i + 1; j < x.size(); ++j) {
-            if (x[i] == x[j]) {
-                return 2;  
-            }
-        }
-    }
-
-    return 0;  // ok
-}
-
 
 template<typename T>
 std::tuple<T, int> lagrange_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_val) {
@@ -112,13 +126,14 @@ std::tuple<T, int> neville_interpolation(const std::vector<T>& x, const std::vec
         return std::make_tuple(T(0), 2);
     }
 
-    size_t n = x.size();
+    int n = static_cast<int>(x.size());
     std::vector<T> p = y;
 
-    for (size_t i = 1; i < n; ++i) {
-        for (size_t j = n - 1; j >= i; --j) {
+    for (int i = 1; i < n; ++i) {
+        for (int j = n - 1; j >= i; --j) {
             p[j] = ((x_val - x[j - i]) * p[j] - (x_val - x[j]) * p[j - 1]) / (x[j] - x[j - i]);
         }
     }
+
     return std::make_tuple(p[n - 1], 0);
 }
