@@ -50,18 +50,27 @@ void floating_point(int num_count, char* argv[]){
     auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
     auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
 
-    cout << "Lagrange Interpolation Result: ";
+    cout << "Lagrange Result: ";
     char buffer[128];
-    quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result);
+    quadmath_snprintf(buffer, sizeof(buffer), "%0.14Qe", result);
     cout << buffer << endl;
 
-    cout << "Neville Interpolation Result: ";
-    quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result2);
+    cout << "Neville Result: ";
+    quadmath_snprintf(buffer, sizeof(buffer), "%0.14Qe", result2);
     cout << buffer << endl;
 
-    cout << "Lagrange Interpolation Weighted Result: ";
-    quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result3);
-    cout << buffer << endl;
+    cout << "Lagrange polynomial coefficients: [\n";
+    auto [result4, status4] = lagrange_polynomial(x_numbers, y_numbers);
+    for (const auto& coeff : result4) {
+        quadmath_snprintf(buffer, sizeof(buffer), "%0.14Qe", coeff);
+        cout << "   " << buffer << ",\n" ;
+    }
+
+    cout << "]\n";
+
+    //cout << "Lagrange Interpolation Weighted Result: ";
+    //quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result3);
+    //cout << buffer << endl;
 
     
 }   
@@ -106,9 +115,17 @@ void floating_point_to_interval(int num_count, char* argv[]){
     auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
     auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
-    cout << "Lagrange Interpolation Result: " << result << endl;
-    cout << "Neville Interpolation Result: " << result2 << endl;
-    cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
+    cout << "Lagrange Result: " << result << endl;
+    cout << "Neville Result: " << result2 << endl;
+
+    cout << "Lagrange polynomial coefficients: [\n";
+    auto [result5, status5] = lagrange_polynomial(x_numbers, y_numbers);
+    for (const auto& coeff : result4) {
+        cout << "   " << coeff << ",\n" ;
+    }
+
+    cout << "]\n";
+    //cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
     
 
 
@@ -165,9 +182,9 @@ void interval_to_interval(int num_count, char* argv[]){
     auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
     auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
-    cout << "Lagrange Interpolation Result: " << result << endl;
-    cout << "Neville Interpolation Result: " << result2 << endl;
-    cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
+    cout << "Lagrange Result: " << result << endl;
+    cout << "Neville Result: " << result2 << endl;
+    //cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
 }
 
 

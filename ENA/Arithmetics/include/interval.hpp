@@ -28,10 +28,10 @@ public:
 
     void print() const {
         char buffer[128];
-        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", lower_bound);
+        quadmath_snprintf(buffer, sizeof(buffer), "%.14Qe", lower_bound);
         std::cout << "[" << buffer << ", ";
 
-        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", upper_bound);
+        quadmath_snprintf(buffer, sizeof(buffer), "%.14Qe", upper_bound);
         std::cout << buffer << "]" << std::endl;
     }
 
@@ -129,11 +129,22 @@ Interval operator-(const Interval& other) const {
 
     friend std::ostream& operator<<(std::ostream& os, const Interval& interval) {
         char buffer[128];
-        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", interval.lower_bound);
+        quadmath_snprintf(buffer, sizeof(buffer), "%.14Qe", interval.lower_bound);
         os << "[" << "\n" << "    "<< buffer << ", " << "\n";
-        quadmath_snprintf(buffer, sizeof(buffer), "%.36Qg", interval.upper_bound);
+        quadmath_snprintf(buffer, sizeof(buffer), "%.14Qe", interval.upper_bound);
         os << "    " << buffer << "\n" << "]";
         return os;
+    }
+
+    Interval operator-() const {
+        fesetround(FE_DOWNWARD);
+        __float128 lo = -upper_bound;
+
+        fesetround(FE_UPWARD);
+        __float128 hi = -lower_bound;
+
+        fesetround(FE_TONEAREST);
+        return Interval(lo, hi);
     }
     
 
