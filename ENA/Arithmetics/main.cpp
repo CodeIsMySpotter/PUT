@@ -46,9 +46,18 @@ void floating_point(int num_count, char* argv[]){
     x_val = strtoflt128(line.c_str(), NULL);
     input_file.close();
 
-    auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
-    auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
-    auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
+    int st = check_conditions(x_numbers);
+    if (st == 1) {
+        cout << "Not enough points for interpolation" << endl;
+        return;
+    } else if (st == 2) {
+        cout << "Duplicated X values" << endl;
+        return;
+    }
+
+    auto result = lagrange_interpolation(x_numbers, y_numbers, x_val);
+    auto result2 = neville_interpolation(x_numbers, y_numbers, x_val);
+    auto result3 = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
 
     cout << "Lagrange Result: ";
     char buffer[128];
@@ -60,12 +69,11 @@ void floating_point(int num_count, char* argv[]){
     cout << buffer << endl;
 
     cout << "Lagrange polynomial coefficients: [\n";
-    auto [result4, status4] = lagrange_polynomial(x_numbers, y_numbers);
+    auto result4 = lagrange_coefficients(x_numbers, y_numbers);
     for (const auto& coeff : result4) {
         quadmath_snprintf(buffer, sizeof(buffer), "%0.14Qe", coeff);
         cout << "   " << buffer << ",\n" ;
     }
-
     cout << "]\n";
 
     //cout << "Lagrange Interpolation Weighted Result: ";
@@ -111,15 +119,24 @@ void floating_point_to_interval(int num_count, char* argv[]){
     Interval x_val = string_to_interval(line);
     input_file.close();
 
-    auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
-    auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
-    auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
+    int st = check_conditions(x_numbers);
+    if (st == 1) {
+        cout << "Not enough points for interpolation" << endl;
+        return;
+    } else if (st == 2) {
+        cout << "Duplicated X values" << endl;
+        return;
+    }
+
+    auto result  = lagrange_interpolation(x_numbers, y_numbers, x_val);
+    auto result2  = neville_interpolation(x_numbers, y_numbers, x_val);
+    auto result3  = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
     cout << "Lagrange Result: " << result << endl;
     cout << "Neville Result: " << result2 << endl;
 
     cout << "Lagrange polynomial coefficients: [\n";
-    auto [result5, status5] = lagrange_polynomial(x_numbers, y_numbers);
+    auto result4 = lagrange_coefficients(x_numbers, y_numbers);
     for (const auto& coeff : result4) {
         cout << "   " << coeff << ",\n" ;
     }
@@ -178,9 +195,18 @@ void interval_to_interval(int num_count, char* argv[]){
     Interval x_val = Interval(number1, number2);
     input_file.close();
 
-    auto [result, status] = lagrange_interpolation(x_numbers, y_numbers, x_val);
-    auto [result2, status2] = neville_interpolation(x_numbers, y_numbers, x_val);
-    auto [result3, status3] = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
+    int st = check_conditions(x_numbers);
+    if (st == 1) {
+        cout << "Not enough points for interpolation" << endl;
+        return;
+    } else if (st == 2) {
+        cout << "Duplicated X values" << endl;
+        return;
+    }
+
+    auto result = lagrange_interpolation(x_numbers, y_numbers, x_val);
+    auto result2 = neville_interpolation(x_numbers, y_numbers, x_val);
+    auto result3 = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
     cout << "Lagrange Result: " << result << endl;
     cout << "Neville Result: " << result2 << endl;
