@@ -8,12 +8,11 @@
 
 using namespace std;
 
-void floating_point(int num_count, char* argv[]){
+int floating_point(int num_count, char* argv[]){
     fstream input_file("Arithmetics/data.txt", ios::in);
 
     if (!input_file) {
-        cout << "Error opening file." << endl;
-        return;
+        return 3;
     }
 
     vector<f128> x_numbers;
@@ -26,7 +25,7 @@ void floating_point(int num_count, char* argv[]){
             f128 number = strtoflt128(line.c_str(), NULL);
             x_numbers.push_back(number);
         } else {
-            cout << "Error reading line " << i + 1 << endl;
+            cerr << "Error reading line " << i + 1 << endl;
             break;
         }
     }
@@ -36,7 +35,7 @@ void floating_point(int num_count, char* argv[]){
             f128 number = strtoflt128(line.c_str(), NULL);
             y_numbers.push_back(number);
         } else {
-            cout << "Error reading line " << i + 1 << endl;
+            cerr << "Error reading line " << i + 1 << endl;
             break;
         }
     }
@@ -48,11 +47,9 @@ void floating_point(int num_count, char* argv[]){
 
     int st = check_conditions(x_numbers);
     if (st == 1) {
-        cout << "Not enough points for interpolation" << endl;
-        return;
+        return 1;
     } else if (st == 2) {
-        cout << "Duplicated X values" << endl;
-        return;
+        return 2;
     }
 
     auto result = lagrange_interpolation(x_numbers, y_numbers, x_val);
@@ -80,16 +77,15 @@ void floating_point(int num_count, char* argv[]){
     //quadmath_snprintf(buffer, sizeof(buffer), "%0.36Qg", result3);
     //cout << buffer << endl;
 
-    
+    return 0;
 }   
 
 
 
-void floating_point_to_interval(int num_count, char* argv[]){
+int floating_point_to_interval(int num_count, char* argv[]){
     fstream input_file("Arithmetics/data.txt", ios::in);
     if (!input_file) {
-        cout << "Error opening file." << endl;
-        return;
+        return 3;
     }
     vector<Interval> x_numbers;
     vector<Interval> y_numbers;
@@ -100,7 +96,7 @@ void floating_point_to_interval(int num_count, char* argv[]){
             f128 number = strtoflt128(line.c_str(), NULL);
             x_numbers.push_back(string_to_interval(line));
         } else {
-            cout << "Error reading line " << i + 1 << endl;
+            cerr << "Error reading line " << i + 1 << endl;
             break;
         }
     }
@@ -110,7 +106,7 @@ void floating_point_to_interval(int num_count, char* argv[]){
             f128 number = strtoflt128(line.c_str(), NULL);
             y_numbers.push_back(string_to_interval(line));
         } else {
-            cout << "Error reading line " << i + 1 << endl;
+            cerr << "Error reading line " << i + 1 << endl;
             break;
         }
     }
@@ -121,11 +117,9 @@ void floating_point_to_interval(int num_count, char* argv[]){
 
     int st = check_conditions(x_numbers);
     if (st == 1) {
-        cout << "Not enough points for interpolation" << endl;
-        return;
+        return 1;
     } else if (st == 2) {
-        cout << "Duplicated X values" << endl;
-        return;
+        return 2;
     }
 
     auto result  = lagrange_interpolation(x_numbers, y_numbers, x_val);
@@ -145,18 +139,17 @@ void floating_point_to_interval(int num_count, char* argv[]){
     //cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
     
 
-
+    return 0;
   
     
 }
 
 
 
-void interval_to_interval(int num_count, char* argv[]){
+int interval_to_interval(int num_count, char* argv[]){
  fstream input_file("Arithmetics/data.txt", ios::in);
     if (!input_file) {
-        cout << "Error opening file." << endl;
-        return;
+        return 3;
     }
     vector<Interval> x_numbers;
     vector<Interval> y_numbers;
@@ -170,7 +163,7 @@ void interval_to_interval(int num_count, char* argv[]){
 
             x_numbers.push_back(interval);
         } else {
-            cout << "Error reading line " << i + 1 << endl;
+            cerr << "Error reading line " << i + 1 << endl;
             break;
         }
     }
@@ -183,7 +176,7 @@ void interval_to_interval(int num_count, char* argv[]){
 
             y_numbers.push_back(interval);
         } else {
-            cout << "Error reading line " << i + 1 << endl;
+            cerr << "Error reading line " << i + 1 << endl;
             break;
         }
     }
@@ -197,19 +190,20 @@ void interval_to_interval(int num_count, char* argv[]){
 
     int st = check_conditions(x_numbers);
     if (st == 1) {
-        cout << "Not enough points for interpolation" << endl;
-        return;
+        return 1;
     } else if (st == 2) {
-        cout << "Duplicated X values" << endl;
-        return;
+        return 2;
     }
 
     auto result = lagrange_interpolation(x_numbers, y_numbers, x_val);
     auto result2 = neville_interpolation(x_numbers, y_numbers, x_val);
     auto result3 = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
+
     cout << "Lagrange Result: " << result << endl;
     cout << "Neville Result: " << result2 << endl;
+    return 0;
+
     //cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
 }
 
@@ -225,7 +219,7 @@ int main(int argc, char* argv[]) {
 
 
     if (argc < 2) {
-        cout << "Usage: " << argv[0] << " <interval>" << endl;
+        cerr << "Usage: " << argv[0] << " <interval>" << endl;
         return 1;
     }
 
@@ -233,14 +227,60 @@ int main(int argc, char* argv[]) {
     int num_count = atoi(argv[2]);
 
     if(cmd=="1")  {
-        floating_point(num_count, argv);
+        int status = floating_point(num_count, argv);
+        if(status == 0){
+            return 0;
+        }else if(status == 1){
+            cerr << "Error:" << endl;
+            cerr << "Not enough points for interpolation" << endl;
+            return 1;
+        }else if(status == 2){
+            cerr << "Error:" << endl;
+            cerr << "Duplicated X values" << endl;
+            return 2;
+        }else if(status == 3){
+            cerr << "Error:" << endl;
+            cerr << "Error oppening file" << endl;
+            return 3;
+        }
     }else if (cmd=="2"){
-        floating_point_to_interval(num_count, argv);
+        int status = floating_point_to_interval(num_count, argv);
+        if(status == 0){
+            return 0;
+        }else if(status == 1){
+            cerr << "Error:" << endl;
+            cerr << "Not enough points for interpolation" << endl;
+            return 1;
+        }else if(status == 2){
+            cerr << "Error:" << endl;
+            cerr << "Duplicated X values" << endl;
+            return 2;
+        }else if(status == 3){
+            cerr << "Error:" << endl;
+            cerr << "Error oppening file" << endl;
+            return 3;
+        }
     }else if (cmd=="3"){
-        interval_to_interval(num_count, argv);
+        int status = interval_to_interval(num_count, argv);
+        if(status == 0){
+            return 0;
+        }else if(status == 1){
+            cerr << "Error:" << endl;
+            cerr << "Not enough points for interpolation" << endl;
+            return 1;
+        }else if(status == 2){
+            cerr << "Error:" << endl;
+            cerr << "Duplicated X values" << endl;
+            return 2;
+        }else if(status == 3){
+            cerr << "Error:" << endl;
+            cerr << "Error oppening file" << endl;
+            return 3;
+        }
     }else{
-        cout << "Invalid command. Use 1, 2, or 3." << endl;
-        return 1;
+        cerr << "Invalid command. Use 1, 2, or 3." << endl;
+        cerr.flush();
+        return 4;
     }
 
     return 0;

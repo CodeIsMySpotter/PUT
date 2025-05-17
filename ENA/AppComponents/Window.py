@@ -345,8 +345,7 @@ class Application(QMainWindow):
         
         
         if self.x_input.text() == "" or self.y_input.text() == "" or self.point_input.text() == "":
-            print(1)
-            self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> Please fill all the gaps </span>")
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> Error: Please fill all the gaps </span>")
             return
 
         if self.op_signal == 1:
@@ -355,7 +354,7 @@ class Application(QMainWindow):
             point = self.point_input.text()
 
             if len(x_args) != len(y_args):
-                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> X and Y values must be the same length</span>")
+                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> Error: X and Y values must be the same length</span>")
                 return
 
             with open("Arithmetics/data.txt", "w") as f:
@@ -371,7 +370,6 @@ class Application(QMainWindow):
             self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
             self.process.readyReadStandardOutput.connect(self.handle_stdout)
             self.process.readyReadStandardError.connect(self.handle_stderr)
-            self.process.finished.connect(self.handle_finish)
             args = [str(self.op_signal), str(len(x_args))]
             self.process.start("./Arithmetics/main.exe", args)
 
@@ -381,7 +379,7 @@ class Application(QMainWindow):
             point = self.point_input.text()
 
             if len(x_args) != len(y_args):
-                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> X and Y values must be the same </span>")
+                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> Error: X and Y values must be the same </span>")
                 return
 
             with open("Arithmetics/data.txt", "w") as f:
@@ -391,12 +389,11 @@ class Application(QMainWindow):
                     f.write(f"{y_args[i]}\n")
                 f.write(f"{point}\n")
 
-            self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Output: </span>")
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'>Output: </span>")
             self.process = QProcess()
-            self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
+            self.process.setProcessChannelMode(QProcess.ProcessChannelMode.SeparateChannels)
             self.process.readyReadStandardOutput.connect(self.handle_stdout)
             self.process.readyReadStandardError.connect(self.handle_stderr)
-            self.process.finished.connect(self.handle_finish)
             args = [str(self.op_signal), str(len(x_args))]
             self.process.start("./Arithmetics/main.exe", args)
 
@@ -416,7 +413,7 @@ class Application(QMainWindow):
             
 
             if len(x_args) != len(y_args):
-                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> X and Y values must be the same </span>")
+                self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'> Error: X and Y values must be the same </span>")
                 return
 
             with open("Arithmetics/data.txt", "w") as f:
@@ -431,7 +428,6 @@ class Application(QMainWindow):
             self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
             self.process.readyReadStandardOutput.connect(self.handle_stdout)
             self.process.readyReadStandardError.connect(self.handle_stderr)
-            self.process.finished.connect(self.handle_finish)
             args = [str(self.op_signal), str(len(x_args))]
             self.process.start("./Arithmetics/main.exe", args)
         
@@ -440,15 +436,20 @@ class Application(QMainWindow):
     def handle_stdout(self):
         data = self.process.readAllStandardOutput()
         text = bytes(data).decode('utf8')
-        self.output_field.append(text)
+        splitted = text.split("\n")
+        print(splitted)
+        if splitted[0].strip() == "Error:":
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'>{text}</span>")
+        else:
+            self.output_field.append(text)
+            self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Program finished succesfully </span>")
 
     def handle_stderr(self):
         data = self.process.readAllStandardError()
         text = bytes(data).decode('utf8')
         self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'>{text}</span>")
 
-    def handle_finish(self):
-        self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Program finished succesfully </span>")
+            
     
 
 
