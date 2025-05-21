@@ -21,14 +21,19 @@ def build_graph_matrix(n, edges):
         if u != v and u not in cycle_list[v]:
             pred_list[v].append(u)
 
-        adj_list[u].sort()
-        pred_list[v].sort()
+    for lst in adj_list.values():
+        lst.sort()
+    for lst in pred_list.values():
+        lst.sort()
 
+    edge_set = set(edges)
     for v in vertices:
-        nonincident[v] = []
+        incident = set()
         for u in vertices:
-            if (v, u) not in edges and (u, v) not in edges:
-                nonincident[v].append(u)
+            if (v, u) in edge_set or (u, v) in edge_set:
+                incident.add(u)
+        nonincident[v] = sorted(vertices - incident)
+
 
     for vi in range(1, n+1):
         if vi not in adj_list or adj_list[vi] == []:

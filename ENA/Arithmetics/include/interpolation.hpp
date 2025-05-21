@@ -44,6 +44,7 @@ std::vector<T> lagrange_coefficients(const std::vector<T>& x, const std::vector<
 
             li_coeffs = next;
             denom *= (x[i] - x[j]); 
+            
         }
 
         T scale = y[i] / denom;
@@ -66,6 +67,7 @@ T lagrange_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_v
                 T numerator = x_val - x[j];
                 T denominator = x[i] - x[j];
                 T fraction = numerator / denominator;
+                
                 term = term * fraction;
             }
         }
@@ -107,7 +109,6 @@ T lagrange_interpolation_weighted(const std::vector<T>& x, const std::vector<T>&
 
 template<typename T>
 T neville_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_val) {
-   
 
     int n = static_cast<int>(x.size());
     std::vector<T> p = y;

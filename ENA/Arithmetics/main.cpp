@@ -1,10 +1,11 @@
-#include <quadmath.h>
+//#include <quadmath.h>
 #include <iostream>
 #include <cmath>
 #include <interval.hpp>
 #include <interpolation.hpp>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -15,14 +16,14 @@ int floating_point(int num_count, char* argv[]){
         return 3;
     }
 
-    vector<f128> x_numbers;
-    vector<f128> y_numbers;
+    vector<f80> x_numbers;
+    vector<f80> y_numbers;
 
     string line;
 
     for(int i = 0; i < num_count; ++i) {
         if (input_file>>line) {
-            f128 number = strtoflt128(line.c_str(), NULL);
+            f80 number = stold(line);
             x_numbers.push_back(number);
         } else {
             cerr << "Error reading line " << i + 1 << endl;
@@ -32,7 +33,7 @@ int floating_point(int num_count, char* argv[]){
 
     for(int i = 0; i < num_count; ++i) {
         if(input_file>>line) {
-            f128 number = strtoflt128(line.c_str(), NULL);
+            f80 number = stold(line);
             y_numbers.push_back(number);
         } else {
             cerr << "Error reading line " << i + 1 << endl;
@@ -40,9 +41,9 @@ int floating_point(int num_count, char* argv[]){
         }
     }
 
-    f128 x_val;
+    f80 x_val;
     input_file >> line;
-    x_val = strtoflt128(line.c_str(), NULL);
+    x_val = stold(line);
     input_file.close();
 
     int st = check_conditions(x_numbers);
@@ -56,20 +57,16 @@ int floating_point(int num_count, char* argv[]){
     auto result2 = neville_interpolation(x_numbers, y_numbers, x_val);
     auto result3 = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
 
-    cout << "Lagrange Result: ";
-    char buffer[128];
-    quadmath_snprintf(buffer, sizeof(buffer), "%0.14Qe", result);
-    cout << buffer << endl;
+    cout << fixed << setprecision(20);
+    cout << "Lagrange Result: " << scientific << result << endl;
+    cout << "Neville Result: " << scientific << result2 << endl;
 
-    cout << "Neville Result: ";
-    quadmath_snprintf(buffer, sizeof(buffer), "%0.14Qe", result2);
-    cout << buffer << endl;
 
     cout << "Lagrange polynomial coefficients: [\n";
     auto result4 = lagrange_coefficients(x_numbers, y_numbers);
     for (const auto& coeff : result4) {
-        quadmath_snprintf(buffer, sizeof(buffer), "%0.14Qe", coeff);
-        cout << "   " << buffer << ",\n" ;
+        
+        cout << "   " << coeff << ",\n" ;
     }
     cout << "]\n";
 
@@ -93,7 +90,7 @@ int floating_point_to_interval(int num_count, char* argv[]){
 
     for(int i = 0; i < num_count; ++i) {
         if (input_file>>line) {
-            f128 number = strtoflt128(line.c_str(), NULL);
+            f80 number = stold(line);
             x_numbers.push_back(string_to_interval(line));
         } else {
             cerr << "Error reading line " << i + 1 << endl;
@@ -103,7 +100,7 @@ int floating_point_to_interval(int num_count, char* argv[]){
 
     for(int i = 0; i < num_count; ++i) {
         if(input_file>>line) {
-            f128 number = strtoflt128(line.c_str(), NULL);
+            f80 number = stold(line);
             y_numbers.push_back(string_to_interval(line));
         } else {
             cerr << "Error reading line " << i + 1 << endl;
@@ -124,7 +121,7 @@ int floating_point_to_interval(int num_count, char* argv[]){
 
     auto result  = lagrange_interpolation(x_numbers, y_numbers, x_val);
     auto result2  = neville_interpolation(x_numbers, y_numbers, x_val);
-    auto result3  = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
+    
     
     cout << "Lagrange Result: " << result << endl;
     cout << "Neville Result: " << result2 << endl;
@@ -136,7 +133,6 @@ int floating_point_to_interval(int num_count, char* argv[]){
     }
 
     cout << "]\n";
-    //cout << "Lagrange Interpolation Weighted Result: " << result3 << endl;
     
 
     return 0;
@@ -157,8 +153,8 @@ int interval_to_interval(int num_count, char* argv[]){
 
     for(int i = 0; i < num_count; ++i) {
         if (input_file>>a>>b) {
-            f128 number1 = strtoflt128(a.c_str(), NULL);
-            f128 number2 = strtoflt128(b.c_str(), NULL);
+            f80 number1 = stold(a);
+            f80 number2 = stold(b);
             Interval interval = Interval(number1, number2);
 
             x_numbers.push_back(interval);
@@ -170,8 +166,8 @@ int interval_to_interval(int num_count, char* argv[]){
 
     for(int i = 0; i < num_count; ++i) {
         if(input_file>>a>>b) {
-            f128 number1 = strtoflt128(a.c_str(), NULL);
-            f128 number2 = strtoflt128(b.c_str(), NULL);
+            f80 number1 = stold(a);
+            f80 number2 = stold(b);
             Interval interval = Interval(number1, number2);
 
             y_numbers.push_back(interval);
@@ -183,8 +179,8 @@ int interval_to_interval(int num_count, char* argv[]){
     
     input_file >> a >> b;
     
-    f128 number1 = strtoflt128(a.c_str(), NULL);
-    f128 number2 = strtoflt128(b.c_str(), NULL);
+    f80 number1 = stold(a);
+    f80 number2 = stold(b);
     Interval x_val = Interval(number1, number2);
     input_file.close();
 
@@ -197,7 +193,6 @@ int interval_to_interval(int num_count, char* argv[]){
 
     auto result = lagrange_interpolation(x_numbers, y_numbers, x_val);
     auto result2 = neville_interpolation(x_numbers, y_numbers, x_val);
-    auto result3 = lagrange_interpolation_weighted(x_numbers, y_numbers, x_val);
     
 
     cout << "Lagrange Result: " << result << endl;

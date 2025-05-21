@@ -48,6 +48,12 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "set": "cpp",
-    "cfenv": "cpp"
+    "cfenv": "cpp",
+    "complex": "cpp",
+    "cstring": "cpp",
+    "ctime": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "sstream": "cpp"
   }
 }

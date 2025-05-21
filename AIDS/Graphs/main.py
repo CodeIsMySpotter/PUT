@@ -40,7 +40,7 @@ def save_result(cursor, nodes, method, matrix_type, duration):
 
 def run_tests():
     conn, cursor = setup_db()
-    tests = [5, 10, 15, 20]
+    tests = [700]
 
     for n in tests:
         print("generating dag: ", n)
@@ -119,7 +119,7 @@ def plot_results():
 
 
 if __name__ == "__main__":
-    run_tests()
+    #run_tests()
     plot_results()
     #edges, n = read_from_file()
     #print_matrix(build_graph_matrix(n, edges))

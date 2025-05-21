@@ -370,6 +370,7 @@ class Application(QMainWindow):
             self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
             self.process.readyReadStandardOutput.connect(self.handle_stdout)
             self.process.readyReadStandardError.connect(self.handle_stderr)
+            self.process.finished.connect(self.handle_finished)
             args = [str(self.op_signal), str(len(x_args))]
             self.process.start("./Arithmetics/main.exe", args)
 
@@ -437,12 +438,15 @@ class Application(QMainWindow):
         data = self.process.readAllStandardOutput()
         text = bytes(data).decode('utf8')
         splitted = text.split("\n")
-        print(splitted)
+       
         if splitted[0].strip() == "Error:":
             self.output_field.append(f"<span style='color:{CATPPUCCIN['red']};'>{text}</span>")
         else:
             self.output_field.append(text)
-            self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Program finished succesfully </span>")
+            
+
+    def handle_finished(self):
+        self.output_field.append(f"<span style='color:{CATPPUCCIN['green']};'> Program finished succesfully </span>")
 
     def handle_stderr(self):
         data = self.process.readAllStandardError()
