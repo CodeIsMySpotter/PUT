@@ -71,7 +71,7 @@ T lagrange_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_v
                 term = term * fraction;
             }
         }
-        result += term;
+        result = result + term;
     }
     return result;
 }
