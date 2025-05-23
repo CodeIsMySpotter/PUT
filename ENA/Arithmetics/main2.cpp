@@ -10,7 +10,7 @@
 #include <interpolation.hpp>
 
 #define PRECISION 63
-#define OUTPUT_PRECISION 17
+#define OUTPUT_PRECISION 18
 
 typedef long double f80;
 using namespace std;
@@ -129,12 +129,6 @@ class Interval {
             fesetround(FE_TONEAREST);
             return Interval(lo, hi);
         }
-
-        
-
-        
-
-    
         f80 lower_bound;
         f80 upper_bound;
 };
