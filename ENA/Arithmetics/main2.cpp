@@ -209,9 +209,19 @@ int mode_f80(){
     return 1;
 }
 
+int mode_f80_interval(){
+    return 2;
+}
+
+int mode_interval(){
+    return 3;
+}
+
+
+
 #pragma STDC FENV_ACCESS ON  
 
-int main() {
+int main(int argc, char* argv[]) {
 
     vector<f80> x_numbers = {100, 121, 144};
     vector<f80> y_numbers = {10, 11, 12};

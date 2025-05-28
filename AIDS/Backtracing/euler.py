@@ -2,105 +2,93 @@ from collections import defaultdict
 
 def eulerian_cycle_matrix(graph):
     n = len(graph)
-    graph_copy = [row[:] for row in graph]
     path = []
 
-    def dfs(u):
-        for v in range(n):
-            while graph_copy[u][v] > 0:
-                graph_copy[u][v] -= 1
-                graph_copy[v][u] -= 1
-                dfs(v)
-        path.append(u)
+    def is_valid_graph():
+        for row in graph:
+            if sum(row) % 2 != 0:
+                return False
+        return True
 
-    # Sprawdź parzystość stopni
-    for i in range(n):
-        if sum(graph[i]) % 2 != 0:
-            print("Graf wejściowy nie zawiera cyklu.")
-            return
+    def backtrack(v, visited_edges, path):
+        for u in range(n):
+            if graph[v][u] > 0:
+                graph[v][u] -= 1
+                graph[u][v] -= 1
+                visited_edges += 1
+ 
+                path.append(u)
+                if backtrack(u, visited_edges, path):
+                    return True
 
-    visited = [False] * n
-    def dfs_check(u):
-        visited[u] = True
-        for v in range(n):
-            if graph[u][v] > 0 and not visited[v]:
-                dfs_check(v)
+                graph[v][u] += 1
+                graph[u][v] += 1
+                visited_edges -= 1
+                path.pop()
 
-    start = next((i for i in range(n) if sum(graph[i]) > 0), None)
-    if start is None:
+        if visited_edges == total_edges:
+            return True
+        return False
+
+    if not is_valid_graph():
         print("Graf wejściowy nie zawiera cyklu.")
         return
 
-    dfs_check(start)
-    for i in range(n):
-        if sum(graph[i]) > 0 and not visited[i]:
-            print("Graf wejściowy nie zawiera cyklu.")
-            return
-
-    dfs(start)
-    print(path[::-1])
+    total_edges = sum(sum(row) for row in graph) // 2
+    path = [0]
+    if backtrack(0, 0, path):
+        print("Cykl Eulera:", path)
+    else:
+        print("Graf wejściowy nie zawiera cyklu.")
 
 
 
-def eulerian_cycle_adjlist(graph):
-    graph_copy = defaultdict(list)
+def eulerian_cycle_adjlist(adjlist):
+    from collections import defaultdict
+    import copy
+
     in_deg = defaultdict(int)
     out_deg = defaultdict(int)
+    total_edges = 0
 
-    for u in graph:
-        for v in graph[u]:
-            graph_copy[u].append(v)
-            out_deg[u] += 1
+    for u in adjlist:
+        out_deg[u] += len(adjlist[u])
+        for v in adjlist[u]:
             in_deg[v] += 1
+            total_edges += 1
 
-    all_nodes = set(in_deg) | set(out_deg)
-    for node in all_nodes:
-        if in_deg[node] != out_deg[node]:
+    all_nodes = set(in_deg.keys()) | set(out_deg.keys())
+    for v in all_nodes:
+        if in_deg[v] != out_deg[v]:
             print("Graf wejściowy nie zawiera cyklu.")
             return
 
-    # Sprawdź silną spójność (tu uproszczenie — DFS w obu kierunkach)
-    def dfs(g, u, visited):
-        visited.add(u)
-        for v in g[u]:
-            if v not in visited:
-                dfs(g, v, visited)
-
-    start = next(iter(graph), None)
-    if start is None:
-        print("Graf wejściowy nie zawiera cyklu.")
-        return
-
-    visited = set()
-    dfs(graph, start, visited)
-    if len(visited) != len(all_nodes):
-        print("Graf wejściowy nie zawiera cyklu.")
-        return
-
-    # Odwrócony graf
-    rev_graph = defaultdict(list)
-    for u in graph:
-        for v in graph[u]:
-            rev_graph[v].append(u)
-
-    visited.clear()
-    dfs(rev_graph, start, visited)
-    if len(visited) != len(all_nodes):
-        print("Graf wejściowy nie zawiera cyklu.")
-        return
-
+    graph = copy.deepcopy(adjlist)
     path = []
+    start = next(iter(adjlist))  
 
-    def dfs_euler(u):
-        while graph_copy[u]:
-            v = graph_copy[u].pop()
-            dfs_euler(v)
-        path.append(u)
+    def backtrack(v, visited_edges, path):
+        for i in range(len(graph[v])):
+            u = graph[v][i]
+            if u is None:
+                continue
+            graph[v][i] = None
+            visited_edges += 1
+            path.append(u)
 
-    dfs_euler(start)
+            if backtrack(u, visited_edges, path):
+                return True
 
-    total_edges = sum(len(vs) for vs in graph.values())
-    if len(path) == total_edges + 1:
-        print(path[::-1])
+            graph[v][i] = u
+            visited_edges -= 1
+            path.pop()
+
+        if visited_edges == total_edges:
+            return True
+        return False
+
+    path.append(start)
+    if backtrack(start, 0, path):
+        print("Cykl Eulera:", path)
     else:
         print("Graf wejściowy nie zawiera cyklu.")
