@@ -22,7 +22,14 @@ int check_conditions(const std::vector<T>& x) {
 }
 
 template<typename T>
-std::vector<T> lagrange_coefficients(const std::vector<T>& x, const std::vector<T>& y) {
+std::vector<T> coeffs(const std::vector<T>& x, const std::vector<T>& y, int &st) {
+
+    st = check_conditions(x);
+    if(st != 0){
+        return {};
+    }
+
+
     size_t n = x.size();
     std::vector<T> result(n, T(0));
 
@@ -56,8 +63,14 @@ std::vector<T> lagrange_coefficients(const std::vector<T>& x, const std::vector<
 }
 
 template<typename T>
-T lagrange_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_val) {
+T lagrange(const std::vector<T>& x, const std::vector<T>& y, T x_val, int &st) {
   
+    st = check_conditions(x);
+    if(st != 0){
+        Interval res(0.0);
+        return res;
+    }
+
     T result = T(0);
     size_t n = x.size();
     for (size_t i = 0; i < n; ++i) {
@@ -76,46 +89,27 @@ T lagrange_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_v
     return result;
 }
 
-template<typename T>
-T lagrange_interpolation_weighted(const std::vector<T>& x, const std::vector<T>& y, T x_val) {
-   
-
-    size_t n = x.size();
-    std::vector<T> weights(n, T(1));
-
-    // Oblicz wagi: w_i = 1 / Π_{j ≠ i} (x_i - x_j)
-    for (size_t i = 0; i < n; ++i) {
-        for (size_t j = 0; j < n; ++j) {
-            if (i != j)
-                weights[i] = weights[i] * (x[i] - x[j]);
-        }
-        weights[i] = T(1) / weights[i];
-    }
-
-    // Oblicz licznik i mianownik sumy
-    T numerator = T(0);
-    T denominator = T(0);
-
-    for (size_t i = 0; i < n; ++i) {
-        T term = weights[i] / (x_val - x[i]);
-        numerator += term * y[i];
-        denominator += term;
-    }
-
-    T result = numerator / denominator;
-    return result;
-}
-
 
 template<typename T>
-T neville_interpolation(const std::vector<T>& x, const std::vector<T>& y, T x_val) {
+T neville(const std::vector<T>& x, const std::vector<T>& y, T x_val, int &st) {
+
+    st = check_conditions(x);
+    if(st != 0){
+        Interval res(0.0);
+        return res;
+    }
+
 
     int n = static_cast<int>(x.size());
     std::vector<T> p = y;
 
     for (int i = 1; i < n; ++i) {
         for (int j = n - 1; j >= i; --j) {
-            p[j] = ((x_val - x[j - i]) * p[j] - (x_val - x[j]) * p[j - 1]) / (x[j] - x[j - i]);
+            T num1 = (x_val - x[j - i]) * p[j];
+            T num2 = (x_val - x[j]) * p[j - 1];
+            T denom = x[j] - x[j - i];
+            p[j] = (num1 - num2) / denom;
+
         }
     }
 

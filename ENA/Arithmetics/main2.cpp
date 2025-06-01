@@ -6,11 +6,12 @@
 #include <mpfr.h>   // MPFR
 #include <vector>
 #include <tuple>
+#include <fstream>
 
 #include <interpolation.hpp>
 
 #define PRECISION 63
-#define OUTPUT_PRECISION 18
+#define OUTPUT_PRECISION 17
 
 typedef long double f80;
 using namespace std;
@@ -129,6 +130,26 @@ class Interval {
             fesetround(FE_TONEAREST);
             return Interval(lo, hi);
         }
+
+        bool operator==(const Interval& other) const {
+            return lower_bound == other.lower() && upper_bound == other.upper();
+        }
+
+        Interval& operator+=(const Interval& other) {
+            *this = *this + other;
+            return *this;
+        }
+
+        Interval& operator-=(const Interval& other) {
+            *this = *this - other;
+            return *this;
+        }
+
+        Interval& operator*=(const Interval& other) {
+            *this = *this * other;
+            return *this;
+        }
+
         f80 lower_bound;
         f80 upper_bound;
 };
@@ -149,12 +170,12 @@ f80 width(const Interval &x) {
     return (w1 > w2) ? w1 : w2;
 }
 
- inline void interval_to_string(Interval interval, string &left, string &right) {
+void interval_to_string(Interval interval, string &left, string &right) {
      mpfr_t rop;
      mpfr_exp_t exponent;
      mpfr_init2(rop, PRECISION);
      char *str = NULL;
-     char *buffer = new char(PRECISION + 3);
+     char *buffer = new char[PRECISION + 3];
      mpfr_set_ld(rop, interval.lower_bound, MPFR_RNDD);
      mpfr_get_str(buffer, &exponent, 10, OUTPUT_PRECISION, rop, MPFR_RNDD);
      str = buffer;
@@ -205,64 +226,263 @@ Interval read(const string &sa) {
     return x;
 }
 
-int mode_f80(){
-    return 1;
+int mode_f80(char* argv[]) {
+    
+    fstream f80_file;
+    f80_file.open("arithmetics/data.txt");
+    
+    if (!f80_file.is_open()) {
+        return 3;
+    }
+
+    vector<f80> x_numbers;
+    vector<f80> y_numbers;
+    f80 xx;
+    string line;
+
+    for(int idx=0; idx < atoi(argv[2]); idx ++){
+        if (f80_file >> line) {
+            f80 number = stold(line);
+            x_numbers.push_back(number);
+        }
+    }
+
+    for(int idx=0; idx < atoi(argv[2]); idx ++){
+        if (f80_file >> line) {
+            f80 number = stold(line);
+            y_numbers.push_back(number);
+        }
+    }
+
+    f80_file >> line;
+    xx = stold(line);
+
+    f80_file.close();
+
+    int st;
+
+    f80 result_f = lagrange(x_numbers, y_numbers, xx, st);
+    f80 result_f2 = neville(x_numbers, y_numbers, xx, st);
+    vector<f80> result_f3 = coeffs(x_numbers, y_numbers);
+
+    if(st == 0){
+        cout << fixed << setprecision(OUTPUT_PRECISION);
+        cout << "Lagrange Result: " << scientific << result_f << endl;
+        cout << "Neville Result: " << scientific << result_f2 << endl;
+
+        cout << "Lagrange polynomial coefficients: [\n";
+        for (const auto& coeff : result_f3) {
+            cout << "   " << coeff << ",\n";
+        }
+        cout << "]\n";
+        return 0;
+
+    }else{
+        return st;
+    }
+
 }
 
-int mode_f80_interval(){
-    return 2;
+int mode_f80_interval(char* argv[]) {
+    fstream f80_file;
+    f80_file.open("arithmetics/data.txt");
+    
+    if (!f80_file.is_open()) {
+        return 3;
+    }
+
+    vector<Interval> x_numbers;
+    vector<Interval> y_numbers;
+    string line;
+
+
+    for (int idx = 0; idx < atoi(argv[2]); idx++) {
+        if (!(f80_file >> line)) {
+            return 4;
+        }
+        try {
+            x_numbers.emplace_back(line);
+        } catch (const std::exception& e) {
+            return 4;
+        }
+    }
+
+    for (int idx = 0; idx < atoi(argv[2]); idx++) {
+        if (!(f80_file >> line)) {
+            return 4;
+        }
+        try {
+            y_numbers.emplace_back(line);
+        } catch (const std::exception& e) {
+            return 4;
+        }
+    }
+
+
+    f80_file >> line;
+    Interval xx(line);
+    f80_file.close();
+
+    int st;
+
+    Interval result = lagrange(x_numbers, y_numbers, xx, st);
+    Interval result2 = neville(x_numbers, y_numbers, xx, st);
+    vector<Interval> result3 = coeffs(x_numbers, y_numbers, st);
+
+    if(st == 0){
+        cout << fixed << setprecision(OUTPUT_PRECISION);
+        cout << "Lagrange Result: " << scientific << result_f << endl;
+        cout << "Neville Result: " << scientific << result_f2 << endl;
+
+        cout << "Lagrange polynomial coefficients: [\n";
+        for (const auto& coeff : result_f3) {
+            cout << "   " << coeff << ",\n";
+        }
+        cout << "]\n";
+        return 0;
+    }else{
+        return st;
+    }
 }
 
-int mode_interval(){
-    return 3;
+int mode_interval(char *argv[]){
+
+   fstream f80_file;
+    f80_file.open("arithmetics/data.txt");
+    
+    if (!f80_file.is_open()) {
+        return 3;
+    }
+
+    vector<Interval> x_numbers;
+    vector<Interval> y_numbers;
+    string a, b;
+
+    for(int idx=0; idx < atoi(argv[2]); idx ++){
+        if (f80_file >> a >> b) {
+            Interval number(a, b);
+            x_numbers.push_back(number);
+        }
+    }
+
+    for(int idx=0; idx < atoi(argv[2]); idx ++){
+        if (f80_file >> a >> b) {
+            Interval number(a, b);
+            y_numbers.push_back(number);
+        }
+    }
+
+    
+
+    f80_file >> a >> b;
+    Interval xx(a, b);
+    f80_file.close();
+
+    int st;
+
+    Interval result = lagrange(x_numbers, y_numbers, xx, st);
+    Interval result2 = neville(x_numbers, y_numbers, xx, st);
+    vector<Interval> result3 = coeffs(x_numbers, y_numbers, st);
+
+    if(st == 0){
+        cout << fixed << setprecision(OUTPUT_PRECISION);
+        cout << "Lagrange Result: " << scientific << result_f << endl;
+        cout << "Neville Result: " << scientific << result_f2 << endl;
+
+        cout << "Lagrange polynomial coefficients: [\n";
+        for (const auto& coeff : result_f3) {
+            cout << "   " << coeff << ",\n";
+        }
+        cout << "]\n";
+        return 0;
+    }else{
+        return st;
+    }
+
+
+
 }
 
 
 
-#pragma STDC FENV_ACCESS ON  
 
 int main(int argc, char* argv[]) {
 
-    vector<f80> x_numbers = {100, 121, 144};
-    vector<f80> y_numbers = {10, 11, 12};
-    f80 x_valf = 117;
+    try {
+        string cmd = argv[1];
 
-    auto result_f = lagrange_interpolation(x_numbers, y_numbers, x_valf);
-    auto result_f2 = neville_interpolation(x_numbers, y_numbers, x_valf);
+        if (cmd == "1"){
+            int status = mode_f80(argv);
+            if (status == 0) {
+                return 0;
+            } else if (status == 1) {
+                cerr << "Error:" << endl;
+                cerr << "Not enough points for interpolation" << endl;
+                return 1;
+            } else if (status == 2) {
+                cerr << "Error:" << endl;
+                cerr << "Duplicated X values" << endl;
+                return 2;
+            } else if (status == 3) {
+                cerr << "Error:" << endl;
+                cerr << "Error opening file" << endl;
+                return 3;
+            } else if(status == 4){
+                cerr << "Error:" << endl;
+                cerr << "Error reading file" << endl;
+            }
+        } else if (cmd == "2") {
+            int status = mode_f80_interval(argv);
+            if (status == 0) {
+                return 0;
+            } else if (status == 1) {
+                cerr << "Error:" << endl;
+                cerr << "Not enough points for interpolation" << endl;
+                return 1;
+            } else if (status == 2) {
+                cerr << "Error:" << endl;
+                cerr << "Duplicated X values" << endl;
+                return 2;
+            } else if (status == 3) {
+                cerr << "Error:" << endl;
+                cerr << "Error opening file" << endl;
+                return 3;
+            } else if(status == 4){
+                cerr << "Error:" << endl;
+                cerr << "Error reading file" << endl;
+            }
+        } else if (cmd == "3") {
+            int status = mode_interval(argv);
+            if (status == 0) {
+                return 0;
+            } else if (status == 1) {
+                cerr << "Error:" << endl;
+                cerr << "Not enough points for interpolation" << endl;
+                return 1;
+            } else if (status == 2) {
+                cerr << "Error:" << endl;
+                cerr << "Duplicated X values" << endl;
+                return 2;
+            } else if (status == 3) {
+                cerr << "Error:" << endl;
+                cerr << "Error opening file" << endl;
+                return 3;
+            } else if(status == 4){
+                cerr << "Error:" << endl;
+                cerr << "Error reading file" << endl;
+            }
+        } else {
+            cerr << "Invalid command. Use '1', '2', or '3'." << endl;
+            return 4;
+        }
+    } catch (const std::exception& e) {
+        cerr << "Exception caught in main: " << e.what() << endl;
+        return 5;  
+    }  catch (...) {
+        std::cerr << "Unknown exception caught!" << std::endl;
+        return 6;
+    }
 
-    cout << fixed << setprecision(18);
-    cout << "Lagrange Result: " << scientific << result_f << endl;
-    cout << "Neville Result: " << scientific << result_f2 << endl;
-
-
-    mpfr_set_default_prec(PRECISION);
-
-    vector<Interval> x = {
-        Interval("100"),
-        Interval("121"),
-        Interval("144"),
-        
-    };
-
-    vector<Interval> y = {
-        Interval("10"),
-        Interval("11"),
-        Interval("12"),
-      
-    };
-
-    Interval x_val("117");
-
-    auto result = lagrange_interpolation(x, y, x_val);
-    auto result2 = neville_interpolation(x, y, x_val);
-    int_print(result);
-    int_print(result2);
-
-
-    Interval xx(0.1, 1.1);
-    int_print(xx);
-
-    return 0;
 }
 
-//g++ -std=c++17 -mfpmath=387 -Iinclude -o main.exe main2.cpp -static -lmpfr -lgmp
+//g++ -g -O0 -Wall -Wextra -Wpedantic -std=c++17 -mfpmath=387 -Iarithmetics/include -o ./arithmetics/main.exe ./arithmetics/main2.cpp -static -lmpfr -lgmp
