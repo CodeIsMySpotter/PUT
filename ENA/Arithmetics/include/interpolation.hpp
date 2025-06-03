@@ -67,7 +67,7 @@ T lagrange(const std::vector<T>& x, const std::vector<T>& y, T x_val, int &st) {
   
     st = check_conditions(x);
     if(st != 0){
-        Interval res(0.0);
+        T res(0.0);
         return res;
     }
 
@@ -95,7 +95,7 @@ T neville(const std::vector<T>& x, const std::vector<T>& y, T x_val, int &st) {
 
     st = check_conditions(x);
     if(st != 0){
-        Interval res(0.0);
+        T res(0.0);
         return res;
     }
 

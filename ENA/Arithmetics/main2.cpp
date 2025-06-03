@@ -207,7 +207,9 @@ void interval_to_string(Interval interval, string &left, string &right) {
 void int_print(Interval x) {
     string left, right;
     interval_to_string(x, left, right);
-    cout << "[" << left << ", " << right << "]" << " width " << width(x) << endl;
+    cout << fixed << setprecision(OUTPUT_PRECISION);
+    cout << scientific << "[" << left << ", " << right << "] " << "width: " << setprecision(3) << width(x) << endl;
+    cout << fixed << setprecision(OUTPUT_PRECISION);
 }
 
 Interval read(const string &sa) {
@@ -261,17 +263,17 @@ int mode_f80(char* argv[]) {
 
     int st;
 
-    f80 result_f = lagrange(x_numbers, y_numbers, xx, st);
-    f80 result_f2 = neville(x_numbers, y_numbers, xx, st);
-    vector<f80> result_f3 = coeffs(x_numbers, y_numbers);
+    f80 result = lagrange(x_numbers, y_numbers, xx, st);
+    f80 result2 = neville(x_numbers, y_numbers, xx, st);
+    vector<f80> result3 = coeffs(x_numbers, y_numbers, st);
 
     if(st == 0){
         cout << fixed << setprecision(OUTPUT_PRECISION);
-        cout << "Lagrange Result: " << scientific << result_f << endl;
-        cout << "Neville Result: " << scientific << result_f2 << endl;
+        cout << "Lagrange Result: " << scientific << result << endl;
+        cout << "Neville Result: " << scientific << result2 << endl;
 
         cout << "Lagrange polynomial coefficients: [\n";
-        for (const auto& coeff : result_f3) {
+        for (const auto& coeff : result3) {
             cout << "   " << coeff << ",\n";
         }
         cout << "]\n";
@@ -330,13 +332,14 @@ int mode_f80_interval(char* argv[]) {
     vector<Interval> result3 = coeffs(x_numbers, y_numbers, st);
 
     if(st == 0){
-        cout << fixed << setprecision(OUTPUT_PRECISION);
-        cout << "Lagrange Result: " << scientific << result_f << endl;
-        cout << "Neville Result: " << scientific << result_f2 << endl;
+        cout << "Lagrange Result: ";
+        int_print(result);
+        cout << "Neville Result: ";
+        int_print(result2);
 
         cout << "Lagrange polynomial coefficients: [\n";
-        for (const auto& coeff : result_f3) {
-            cout << "   " << coeff << ",\n";
+        for (const auto& coeff : result3) {
+            int_print(coeff);
         }
         cout << "]\n";
         return 0;
@@ -385,13 +388,14 @@ int mode_interval(char *argv[]){
     vector<Interval> result3 = coeffs(x_numbers, y_numbers, st);
 
     if(st == 0){
-        cout << fixed << setprecision(OUTPUT_PRECISION);
-        cout << "Lagrange Result: " << scientific << result_f << endl;
-        cout << "Neville Result: " << scientific << result_f2 << endl;
+        cout << "Lagrange Result: ";
+        int_print(result);
+        cout << "Neville Result: ";
+        int_print(result2);
 
         cout << "Lagrange polynomial coefficients: [\n";
-        for (const auto& coeff : result_f3) {
-            cout << "   " << coeff << ",\n";
+        for (const auto& coeff : result3) {
+            int_print(coeff);
         }
         cout << "]\n";
         return 0;
