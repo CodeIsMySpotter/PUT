@@ -41,7 +41,7 @@ std::vector<T> coeffs(const std::vector<T>& x, const std::vector<T>& y, int &st)
         for (size_t j = 0; j < n; ++j) {
             if (i == j) continue;
 
-            // li(x) *= (x - xj)
+          
             std::vector<T> next(li_coeffs.size() + 1, T(0));
 
             for (size_t k = 0; k < li_coeffs.size(); ++k) {

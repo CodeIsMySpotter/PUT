@@ -1,9 +1,9 @@
 #include <iostream>
-#include <cmath>      // std::nextafterl
-#include <iomanip>    // std::setprecision
-#include <string>     // std::string, std::stold
-#include <cfenv>      // sterowanie zaokrągleniami
-#include <mpfr.h>   // MPFR
+#include <cmath>      
+#include <iomanip>   
+#include <string>     
+#include <cfenv>      
+#include <mpfr.h>   
 #include <vector>
 #include <tuple>
 #include <fstream>
@@ -339,6 +339,7 @@ int mode_f80_interval(char* argv[]) {
 
         cout << "Lagrange polynomial coefficients: [\n";
         for (const auto& coeff : result3) {
+            cout << "   ";
             int_print(coeff);
         }
         cout << "]\n";
@@ -395,6 +396,7 @@ int mode_interval(char *argv[]){
 
         cout << "Lagrange polynomial coefficients: [\n";
         for (const auto& coeff : result3) {
+            cout << "   ";
             int_print(coeff);
         }
         cout << "]\n";
