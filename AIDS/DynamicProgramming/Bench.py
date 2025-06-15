@@ -218,7 +218,7 @@ def test_time_vs_n_and_capacity(
 ########################################################################################################################################################+
 
 
-nrange = range(2, 20, 2)  # Zakres n do testowania
+nrange = range(2, 30, 2)  # Zakres n do testowania
 
 test_time_vs_n(
     greedy_fn=greedy_knapsack,
