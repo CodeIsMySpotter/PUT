@@ -2,45 +2,43 @@ from collections import defaultdict
 
 def eulerian_cycle_matrix(graph):
     n = len(graph)
+    total_edges = sum(sum(row) for row in graph) // 2  # liczba krawędzi
     path = []
+    visited_edges = [0]  # mutowalny licznik wykorzystanych krawędzi
 
-    def is_valid_graph():
-        for row in graph:
-            if sum(row) % 2 != 0:
-                return False
-        return True
+    # Sprawdzenie, czy graf jest eulerowski (każdy wierzchołek ma parzysty stopień)
+    for i in range(n):
+        if sum(graph[i]) % 2 != 0:
+            return None  # brak cyklu Eulera
 
-    def backtrack(v, visited_edges, path):
+    def backtrack(v):
+        if visited_edges[0] == total_edges:
+            return True
+
         for u in range(n):
             if graph[v][u] > 0:
+                # Zużywamy krawędź (v,u) i (u,v)
                 graph[v][u] -= 1
                 graph[u][v] -= 1
-                visited_edges += 1
- 
+                visited_edges[0] += 1
                 path.append(u)
-                if backtrack(u, visited_edges, path):
+
+                if backtrack(u):
                     return True
 
+                # Cofamy decyzję
                 graph[v][u] += 1
                 graph[u][v] += 1
-                visited_edges -= 1
+                visited_edges[0] -= 1
                 path.pop()
 
-        if visited_edges == total_edges:
-            return True
         return False
 
-    if not is_valid_graph():
-        print("Graf wejściowy nie zawiera cyklu.")
-        return
-
-    total_edges = sum(sum(row) for row in graph) // 2
-    path = [0]
-    if backtrack(0, 0, path):
-        print("Cykl Eulera:", path)
+    path.append(0)  # startujemy z wierzchołka 0
+    if backtrack(0):
+        return path
     else:
-        print("Graf wejściowy nie zawiera cyklu.")
-
+        return None
 
 
 def eulerian_cycle_adjlist(adjlist):
@@ -60,35 +58,40 @@ def eulerian_cycle_adjlist(adjlist):
     all_nodes = set(in_deg.keys()) | set(out_deg.keys())
     for v in all_nodes:
         if in_deg[v] != out_deg[v]:
-            print("Graf wejściowy nie zawiera cyklu.")
-            return
+            return None  # nie jest eulerowski
 
     graph = copy.deepcopy(adjlist)
     path = []
-    start = next(iter(adjlist))  
+    start = next(iter(adjlist))
 
-    def backtrack(v, visited_edges, path):
+    # visited_edges musi być mutowalną zmienną (tu lista z 1 elementem)
+    visited_edges = [0]
+
+    def backtrack(v):
+        if visited_edges[0] == total_edges:
+            return True
+
         for i in range(len(graph[v])):
             u = graph[v][i]
             if u is None:
                 continue
+            # używamy krawędź
             graph[v][i] = None
-            visited_edges += 1
+            visited_edges[0] += 1
             path.append(u)
 
-            if backtrack(u, visited_edges, path):
+            if backtrack(u):
                 return True
 
+            # cofnij decyzję
             graph[v][i] = u
-            visited_edges -= 1
+            visited_edges[0] -= 1
             path.pop()
 
-        if visited_edges == total_edges:
-            return True
         return False
 
     path.append(start)
-    if backtrack(start, 0, path):
-        print("Cykl Eulera:", path)
+    if backtrack(start):
+        return path
     else:
-        print("Graf wejściowy nie zawiera cyklu.")
+        return None

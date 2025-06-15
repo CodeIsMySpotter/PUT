@@ -1,5 +1,31 @@
 from itertools import combinations
 
+import random
+
+def generator_variable_n(n, max_weight=15, max_value=100, fixed_capacity=50):
+    items = [
+        (random.randint(1, max_weight), random.randint(1, max_value))
+        for _ in range(n)
+    ]
+    return {
+        "n": n,
+        "items": items,
+        "capacity": fixed_capacity
+    }
+
+def generator_variable_capacity(n=20, max_weight=15, max_value=100, capacities=[10, 20, 30, 40, 50]):
+    items = [
+        (random.randint(1, max_weight), random.randint(1, max_value))
+        for _ in range(n)
+    ]
+    for c in capacities:
+        yield {
+            "n": n,
+            "items": items,
+            "capacity": c
+        }
+
+
 def read_input(file_path):
     with open(file_path, 'r') as f:
         lines = f.read().strip().split('\n')
@@ -51,10 +77,6 @@ def dynamic_knapsack(items, capacity):
             else:
                 dp[i][c] = dp[i - 1][c]
 
-
-    for row in dp:
-        print(row)
-    print()
 
     chosen = []
     c = capacity
