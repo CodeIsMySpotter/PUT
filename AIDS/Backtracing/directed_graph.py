@@ -43,6 +43,8 @@ def generate_directed_graph(n, saturation):
 
         added += 3
 
+
+    print(target_edges, added)
     # Weryfikacja balansu
     for i in range(n):
         if in_deg[i] != out_deg[i]:

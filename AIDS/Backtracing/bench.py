@@ -272,6 +272,7 @@ def benchmark_surface_plot_directed(
     euler_plot_path="surface_euler_directed.png",
     hamilton_plot_path="surface_hamilton_directed.png"
 ):
+    
     euler_times = np.zeros((len(n_values), len(saturation_values)))
     hamilton_times = np.zeros((len(n_values), len(saturation_values)))
 
@@ -316,12 +317,62 @@ def benchmark_surface_plot_directed(
     plt.savefig(hamilton_plot_path, dpi=300)
     plt.show()
 
+def benchmark_surface_plot_undirected(
+    n_values,
+    saturation_values,
+    generate_undirected_graph,
+    eulerian_cycle_func_undirected,
+    hamiltonian_cycle_func_undirected,
+    euler_plot_path="surface_euler_undirected.png",
+    hamilton_plot_path="surface_hamilton_undirected.png"
+):
+    euler_times = np.zeros((len(n_values), len(saturation_values)))
+    hamilton_times = np.zeros((len(n_values), len(saturation_values)))
 
+    for i, n in enumerate(n_values):
+        for j, s in enumerate(saturation_values):
+            graph = generate_undirected_graph(n, s)
+
+            # Euler
+            start = time.perf_counter()
+            eulerian_cycle_func_undirected(graph)
+            euler_times[i][j] = time.perf_counter() - start
+
+            # Hamilton
+            start = time.perf_counter()
+            hamiltonian_cycle_func_undirected(graph)
+            hamilton_times[i][j] = time.perf_counter() - start
+
+    X, Y = np.meshgrid(saturation_values, n_values)
+
+    # Wykres Eulera
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(X, Y, euler_times, cmap='viridis')
+    ax.set_title("Czas działania algorytmu Eulera (graf nieskierowany)")
+    ax.set_xlabel("Nasycenie (s)")
+    ax.set_ylabel("Liczba wierzchołków (n)")
+    ax.set_zlabel("Czas obliczeń (s)")
+    plt.tight_layout()
+    plt.savefig(euler_plot_path, dpi=300)
+    plt.show()
+
+    # Wykres Hamiltona
+    fig = plt.figure(figsize=(12, 6))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(X, Y, hamilton_times, cmap='plasma')
+    ax.set_title("Czas działania algorytmu Hamiltona (graf nieskierowany)")
+    ax.set_xlabel("Nasycenie (s)")
+    ax.set_ylabel("Liczba wierzchołków (n)")
+    ax.set_zlabel("Czas obliczeń (s)")
+    plt.tight_layout()
+    plt.savefig(hamilton_plot_path, dpi=300)
+    plt.show()
 
 import sys
 sys.setrecursionlimit(10**9)  # Zwiększenie limitu rekurencji
 
-n_values =  range(4, 20, 2)  # liczba wierzchołków do testów 
+n_values =  range(6, 16, 2)  # liczba wierzchołków do testów 
 saturation = 0.5
 
 """benchmark_cycle_algorithms(
@@ -371,7 +422,7 @@ benchmark_vs_saturation_by_algorithm(
     hamiltonian_cycle_func_undirected=find_hamilton_cycle_undirected,
     hamiltonian_cycle_func_directed=find_hamilton_cycle_directed,
     plot_path="czas_vs_s_algorytm.png"
-)"""
+)
 
 benchmark_surface_plot_directed(
     n_values=n_values,
@@ -379,4 +430,13 @@ benchmark_surface_plot_directed(
     generate_directed_graph=generate_directed_graph,
     eulerian_cycle_func_directed=find_euler_cycle_directed,
     hamiltonian_cycle_func_directed=find_hamilton_cycle_directed
+)"""
+
+
+benchmark_surface_plot_undirected(
+    n_values=n_values,
+    saturation_values=[0.2, 0.4, 0.6, 0.8, 1.0],
+    generate_undirected_graph=generate_undirected_graph,
+    eulerian_cycle_func_undirected=find_euler_cycle_undirected,
+    hamiltonian_cycle_func_undirected=find_hamilton_cycle_undirected
 )
