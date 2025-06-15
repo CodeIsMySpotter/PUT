@@ -1,4 +1,4 @@
-def hamiltonian_cycle_matrix(graph):
+def find_hamilton_cycle_undirected(graph):
     n = len(graph)
     path = [0]  
 
@@ -25,7 +25,7 @@ def hamiltonian_cycle_matrix(graph):
     else:
         return None
 
-def hamiltonian_cycle_adjlist(graph):
+def find_hamilton_cycle_directed(graph):
     n = len(graph)
     path = [0]  
     visited = set([0])

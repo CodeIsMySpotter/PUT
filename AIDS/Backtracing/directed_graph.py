@@ -6,71 +6,50 @@ from euler import *
 
 
 
-def generuj_graf(n, saturation):
+def generate_directed_graph(n, saturation):
+    import random
+
     max_edges = n * (n - 1)
     target_edges = int(saturation * max_edges)
-    
-    if target_edges % 2 != 0:
-        target_edges -= 1
-    
+
+    if target_edges % 3 != 0:
+        target_edges -= target_edges % 3
+
     edges = set()
     in_deg = [0] * n
     out_deg = [0] * n
 
-    for i in range(n):
-        u, v = i, (i + 1) % n
-        edges.add((u, v))
-        out_deg[u] += 1
-        in_deg[v] += 1
-    
-    possible_edges = [(u, v) for u in range(n) for v in range(n)
-                      if u != v and (u, v) not in edges and (v, u) not in edges]
-    random.shuffle(possible_edges)
-    
-    while len(edges) + 2 <= target_edges and possible_edges:
-        (u, v) = possible_edges.pop()
-        if (v, u) in edges:
-            continue  
-        
-        edges.add((u, v))
-        edges.add((v, u))
-        
-        out_deg[u] += 1
-        in_deg[v] += 1
-        out_deg[v] += 1
-        in_deg[u] += 1
+    # Losowe trójki typu x → y → z → x
+    triplets = [(x, y, z) for x in range(n) for y in range(n) for z in range(n)
+                if len({x, y, z}) == 3]
 
-    # Sprawdzenie balansu
+    added = 0
+    for x, y, z in triplets:
+        if added + 3 > target_edges:
+            break
+        if ((x, y) in edges or (y, z) in edges or (z, x) in edges):
+            continue
+
+        edges.add((x, y))
+        edges.add((y, z))
+        edges.add((z, x))
+
+        out_deg[x] += 1
+        in_deg[y] += 1
+        out_deg[y] += 1
+        in_deg[z] += 1
+        out_deg[z] += 1
+        in_deg[x] += 1
+
+        added += 3
+
+    # Weryfikacja balansu
     for i in range(n):
-        assert in_deg[i] == out_deg[i], f"Stopnie nie zbilansowane w wierzchołku {i}: in={in_deg[i]}, out={out_deg[i]}"
+        if in_deg[i] != out_deg[i]:
+            print(f"❗ Wierzchołek {i} ma in={in_deg[i]}, out={out_deg[i]}")
 
     return edges
 
-
-def has_eulerian_cycle(n, edges):
-    in_deg = [0] * n
-    out_deg = [0] * n
-    adj = [[] for _ in range(n)]
-    
-    for u, v in edges:
-        out_deg[u] += 1
-        in_deg[v] += 1
-        adj[u].append(v)
-
-    for i in range(n):
-        if in_deg[i] != out_deg[i]:
-            return False
-
-    def dfs(u, visited):
-        visited[u] = True
-        for v in adj[u]:
-            if not visited[v]:
-                dfs(v, visited)
-
-    visited = [False] * n
-    dfs(0, visited)
-    return all(visited)
-    
 
 
 
@@ -82,37 +61,82 @@ def edges_to_successors(edges):
         nast[u].append(v)
     return nast
 
+def find_euler_cycle_directed2(adjlist):
+    from collections import defaultdict, deque
+
+    # Oblicz stopnie
+    in_deg = defaultdict(int)
+    out_deg = defaultdict(int)
+    for u in adjlist:
+        out_deg[u] += len(adjlist[u])
+        for v in adjlist[u]:
+            in_deg[v] += 1
+
+    # Sprawdź warunek Eulera
+    nodes = set(in_deg.keys()) | set(out_deg.keys())
+    for v in nodes:
+        if in_deg[v] != out_deg[v]:
+            return None
+
+    # Tworzymy kopię grafu do modyfikacji
+    graph = {u: deque(vs) for u, vs in adjlist.items()}
+
+    stack = []
+    circuit = []
+    curr = next(iter(graph))
+
+    while stack or graph.get(curr):
+        if not graph.get(curr):
+            circuit.append(curr)
+            curr = stack.pop()
+        else:
+            stack.append(curr)
+            curr = graph[curr].popleft()
+
+    circuit.append(curr)
+    circuit.reverse()
+    return circuit
+
 
 # ====================
 # 🔍 TESTY
 # ====================
 def test_graph(n, saturation):
     print(f"🧪 Test: n = {n}, saturation = {saturation}")
-    edges = generuj_graf(n, saturation)
+    edges = generate_directed_graph(n, saturation)
     print(f"   ➤ Liczba krawędzi: {len(edges)}")
 
     print("  ➤ Eulerowski graf skierowany:")
 
-    if eulerian_cycle_adjlist(edges_to_successors(edges)):
+
+    now = time.time()
+    if find_euler_cycle_directed(edges_to_successors(edges)):
         print("   ✅ Zawiera cykl Eulera")
     else:
         print("   ❌ Brak cyklu Eulera")
+    print(f"   ⏱️ Czas: {time.time() - now:.4f} sekund")
 
 
     print("  ➤ Hamilatonowski graf skierowany:")
-    if n <= 12:
-        if hamiltonian_cycle_adjlist(edges_to_successors(edges)):
-            print("   ✅ Zawiera cykl Hamiltona")
-        else:
-            print("   ❌ Brak cyklu Hamiltona")
+    now = time.time()
+    if find_hamilton_cycle_directed(edges_to_successors(edges)):
+        print("   ✅ Zawiera cykl Hamiltona")
     else:
-        print("   ⚠️ Pominięto test Hamiltona (zbyt duże n)")
+        print("   ❌ Brak cyklu Hamiltona")
+    print(f"   ⏱️ Czas: {time.time() - now:.4f} sekund")
+
 
     print()
 
-# Przykładowe testy
-test_graph(5, 0.25)
-test_graph(6, 0.3)
-test_graph(8, 0.9)
-test_graph(10, 0.5)
-test_graph(12, 1.0)
+
+if __name__ == "__main__":
+    import sys
+    import time
+    sys.setrecursionlimit(10**6)  # Zwiększenie limitu rekurencji
+    n_values = [5, 15, 25, 35, 45]
+    saturation = 0.5
+
+    for n in n_values:
+        test_graph(n, saturation)
+
+    print("Testy zakończone.")

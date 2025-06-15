@@ -1,47 +1,49 @@
 from collections import defaultdict
 
-def eulerian_cycle_matrix(graph):
+def find_euler_cycle_undirected(graph):
+    import copy
     n = len(graph)
-    total_edges = sum(sum(row) for row in graph) // 2  # liczba krawędzi
-    path = []
-    visited_edges = [0]  # mutowalny licznik wykorzystanych krawędzi
+    total_edges = sum(sum(row) for row in graph) // 2
+    path = [0]  # zaczynamy od wierzchołka 0
 
-    # Sprawdzenie, czy graf jest eulerowski (każdy wierzchołek ma parzysty stopień)
-    for i in range(n):
-        if sum(graph[i]) % 2 != 0:
-            return None  # brak cyklu Eulera
+    # Sprawdzenie, czy wszystkie stopnie są parzyste
+    def is_valid():
+        for row in graph:
+            if sum(row) % 2 != 0:
+                return False
+        return True
 
-    def backtrack(v):
-        if visited_edges[0] == total_edges:
+    # Właściwy algorytm z powracaniem
+    def backtrack(v, visited_edges):
+        if visited_edges == total_edges:
             return True
-
         for u in range(n):
             if graph[v][u] > 0:
-                # Zużywamy krawędź (v,u) i (u,v)
+                # przechodzimy przez krawędź
                 graph[v][u] -= 1
                 graph[u][v] -= 1
-                visited_edges[0] += 1
                 path.append(u)
 
-                if backtrack(u):
+                if backtrack(u, visited_edges + 1):
                     return True
 
-                # Cofamy decyzję
+                # cofamy się (backtrack)
+                path.pop()
                 graph[v][u] += 1
                 graph[u][v] += 1
-                visited_edges[0] -= 1
-                path.pop()
-
         return False
 
-    path.append(0)  # startujemy z wierzchołka 0
-    if backtrack(0):
+    if not is_valid():
+        return None  # brak cyklu Eulera
+
+    # kopiujemy oryginalny graf (żeby nie zmieniać wejścia)
+    graph = copy.deepcopy(graph)
+    if backtrack(0, 0):
         return path
-    else:
-        return None
+    return None
 
 
-def eulerian_cycle_adjlist(adjlist):
+def find_euler_cycle_directed(adjlist):
     from collections import defaultdict
     import copy
 

@@ -21,12 +21,12 @@ def test_time_vs_n(
     max_weight=15,
     max_value=100,
     fixed_capacity=50,
-    save_path='time_vs_n.png'
+    save_dir='.'
 ):
+    ns = list(n_range)
     greedy_times = []
     brute_times = []
     dynamic_times = []
-    ns = list(n_range)
 
     for n in ns:
         items = generate_knapsack_data(n, max_weight, max_value)
@@ -44,16 +44,22 @@ def test_time_vs_n(
         dynamic_fn(items, capacity)
         dynamic_times.append(time.perf_counter() - start)
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(ns, greedy_times, label='Greedy', marker='o')
-    plt.plot(ns, brute_times, label='Brute Force', marker='o')
-    plt.plot(ns, dynamic_times, label='Dynamic Programming', marker='o')
-    plt.xlabel('Liczba przedmiotów n')
-    plt.ylabel('Czas wykonania [s]')
-    plt.title(f'Czas działania algorytmów plecakowych w zależności od liczby przedmiotów (pojemność = {fixed_capacity})')
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(save_path)
+    # Tworzenie i zapisywanie wykresów osobno dla każdego algorytmu
+
+    def plot_single(times, label, filename):
+        plt.figure(figsize=(8, 5))
+        plt.plot(ns, times, label=label, marker='o', color='tab:blue')
+        plt.xlabel('Liczba przedmiotów n')
+        plt.ylabel('Czas wykonania [s]')
+        plt.title(f'Czas działania algorytmu {label} (pojemność = {fixed_capacity})')
+        plt.grid(True)
+        plt.legend()
+        plt.savefig(f'{save_dir}/{filename}')
+        plt.close()
+
+    plot_single(greedy_times, 'Greedy', 'time_vs_n_greedy.png')
+    plot_single(brute_times, 'Brute Force', 'time_vs_n_brute.png')
+    plot_single(dynamic_times, 'Dynamic Programming', 'time_vs_n_dynamic.png')
 
 
 ########################################################################################################################################################
@@ -117,7 +123,7 @@ def test_time_vs_capacity(
     n_items=20,
     max_weight=15,
     max_value=100,
-    save_path='time_vs_capacity.png'
+    save_dir='.'
 ):
     greedy_times = []
     brute_times = []
@@ -139,16 +145,22 @@ def test_time_vs_capacity(
         dynamic_fn(items, b)
         dynamic_times.append(time.perf_counter() - start)
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(capacities, greedy_times, label='Greedy', marker='o')
-    plt.plot(capacities, brute_times, label='Brute Force', marker='o')
-    plt.plot(capacities, dynamic_times, label='Dynamic Programming', marker='o')
-    plt.xlabel('Pojemność plecaka b')
-    plt.ylabel('Czas wykonania [s]')
-    plt.title(f'Czas działania algorytmów plecakowych w zależności od pojemności (n = {n_items})')
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(save_path)
+    # Tworzenie i zapisywanie wykresów osobno dla każdego algorytmu
+
+    def plot_single(times, label, filename):
+        plt.figure(figsize=(8, 5))
+        plt.plot(capacities, times, label=label, marker='o', color='tab:blue')
+        plt.xlabel('Pojemność plecaka b')
+        plt.ylabel('Czas wykonania [s]')
+        plt.title(f'Czas działania algorytmu {label} (liczba przedmiotów = {n_items})')
+        plt.grid(True)
+        plt.legend()
+        plt.savefig(f'{save_dir}/{filename}')
+        plt.close()
+
+    plot_single(greedy_times, 'Greedy', 'time_vs_capacity_greedy.png')
+    plot_single(brute_times, 'Brute Force', 'time_vs_capacity_brute.png')
+    plot_single(dynamic_times, 'Dynamic Programming', 'time_vs_capacity_dynamic.png')
 
 
 ########################################################################################################################################################
@@ -189,44 +201,36 @@ def test_time_vs_n_and_capacity(
             dynamic_fn(items, b)
             dynamic_times[i, j] = time.perf_counter() - start
 
-    # Rysuj wykresy 3D
     X, Y = np.meshgrid(b_list, n_list)
 
-    fig = plt.figure(figsize=(18, 5))
-
-    def plot_surface(ax, Z, title):
+    def plot_surface(Z, title, filename):
+        fig = plt.figure(figsize=(8, 6))
+        ax = fig.add_subplot(111, projection='3d')
         surf = ax.plot_surface(X, Y, Z, cmap='viridis', edgecolor='k')
         ax.set_xlabel('Pojemność plecaka b')
         ax.set_ylabel('Liczba przedmiotów n')
         ax.set_zlabel('Czas [s]')
         ax.set_title(title)
         fig.colorbar(surf, ax=ax, shrink=0.5, aspect=10)
+        plt.tight_layout()
+        plt.savefig(filename, dpi=300)
+        plt.close(fig)
 
-    ax1 = fig.add_subplot(131, projection='3d')
-    plot_surface(ax1, greedy_times, 'Greedy')
-
-    ax2 = fig.add_subplot(132, projection='3d')
-    plot_surface(ax2, brute_times, 'Brute Force')
-
-    ax3 = fig.add_subplot(133, projection='3d')
-    plot_surface(ax3, dynamic_times, 'Dynamic Programming')
-
-    plt.tight_layout()
-    plt.savefig("wykres_czas_vs_n_b.png", dpi=300)
-
+    plot_surface(greedy_times, 'Greedy', 'greedy_time_vs_n_b.png')
+    plot_surface(brute_times, 'Brute Force', 'brute_time_vs_n_b.png')
+    plot_surface(dynamic_times, 'Dynamic Programming', 'dynamic_time_vs_n_b.png')
 ########################################################################################################################################################
 ########################################################################################################################################################+
 
 
 nrange = range(2, 30, 2)  # Zakres n do testowania
 
-test_time_vs_n(
+"""test_time_vs_n(
     greedy_fn=greedy_knapsack,
     brute_fn=brute_force_knapsack,
     dynamic_fn=dynamic_knapsack,
     n_range=nrange,
     fixed_capacity=50,
-    save_path='czas_vs_n.png'
 )
 
 test_time_vs_n_log(
@@ -236,17 +240,16 @@ test_time_vs_n_log(
     n_range=nrange,
     fixed_capacity=50,
     save_path='czas_vs_n_log.png'
-)
+)"""
 
-test_time_vs_capacity(
+"""test_time_vs_capacity(
     greedy_fn=greedy_knapsack,
     brute_fn=brute_force_knapsack,
     dynamic_fn=dynamic_knapsack,
     n_items=20,
     b_range=range(10, 100, 10),
-    save_path='czas_vs_pojemnosc.png'
 )
-
+"""
 test_time_vs_n_and_capacity(
     greedy_fn=greedy_knapsack,
     brute_fn=brute_force_knapsack,

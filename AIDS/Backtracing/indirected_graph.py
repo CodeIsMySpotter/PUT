@@ -4,72 +4,99 @@ from euler import *
 from hamilton import *
 
 
+def possible_triplets(possible_vertices, graph):
+    triplets = []
+    length = len(possible_vertices)
+    for i in range(length):
+        for j in range(i + 1, length):
+            for k in range(j + 1, length):
+                x = possible_vertices[i]
+                y = possible_vertices[j]
+                z = possible_vertices[k]
+                if graph[x][y] == 0 and graph[x][z] == 0 and graph[y][z] == 0:
+                    triplets.append((x, y, z))
+    return triplets
 
-def generuj_graf_macierz(n, saturation):
-    max_edges = n * (n - 1) // 2  # maksymalna liczba krawędzi w grafie nieskierowanym bez pętli
+
+
+def generate_undirected_graph(n, saturation):
+    max_edges = n * (n - 1) // 2
     target_edges = int(saturation * max_edges)
-
-    # zapewniamy parzystą liczbę krawędzi (nieobowiązkowe, ale ułatwia bilans stopni)
     if target_edges % 2 != 0:
         target_edges -= 1
 
-    # inicjalizacja macierzy sąsiedztwa zerami
     graph = [[0]*n for _ in range(n)]
-    
-    edges_added = 0
-
-    # 1. Tworzymy podstawowy cykl długości n (n krawędzi)
     for i in range(n):
         u = i
         v = (i + 1) % n
-        graph[u][v] = 1
-        graph[v][u] = 1
-        edges_added += 1
+        graph[u][v] = graph[v][u] = 1
+    edges_added = n
 
-    # 2. Przygotowujemy listę możliwych krawędzi do dodania (u < v, aby nie dublować)
-    possible_edges = [(u, v) for u in range(n) for v in range(u+1, n)
-                      if graph[u][v] == 0]
-    random.shuffle(possible_edges)
+    degrees = [2]*n
 
-    # 3. Dodajemy krawędzie, aż osiągniemy target_edges
-    while edges_added < target_edges and possible_edges:
-        u, v = possible_edges.pop()
-        graph[u][v] = 1
-        graph[v][u] = 1
-        edges_added += 1
+    possible_vertices = [v for v in range(n) if sum(graph[v]) < n - 1]
+    triplets = possible_triplets(possible_vertices, graph)
+
+    while edges_added <= target_edges-3 and triplets:
+        x, y, z = triplets.pop()
+        if graph[x][y] == 0 and graph[x][z] == 0 and graph[y][z] == 0:
+            graph[x][y] = graph[y][x] = 1
+            graph[x][z] = graph[z][x] = 1
+            graph[y][z] = graph[z][y] = 1
+            degrees[x] += 2
+            degrees[y] += 2
+            degrees[z] += 2
+            edges_added += 3
+      
+
+    print(target_edges, edges_added)
+
+    if any(d % 2 != 0 for d in degrees):
+        print("❗ Ostrzeżenie: Nie wszystkie wierzchołki mają parzysty stopień!")
 
     return graph
 
 
+def wszystkie_stopnie_parzyste(graph):
+    n = len(graph)
+    for i in range(n):
+        stopien = sum(graph[i])
+        if stopien % 2 != 0:
+            return False
+    return True
+
 def test_graph(n, saturation):
     print(f"🧪 Test: n = {n}, saturation = {saturation}")
-    matrix = generuj_graf_macierz(n, saturation)
+    matrix = generate_undirected_graph(n, saturation)
 
-    for row in matrix:
-        print(" ".join(str(x) for x in row))
+
 
     print("  ➤ Eulerowski graf skierowany:")
-
-    if eulerian_cycle_matrix(matrix):
+    now = time.time()
+    if find_euler_cycle_undirected(matrix):
         print("   ✅ Zawiera cykl Eulera")
     else:
         print("   ❌ Brak cyklu Eulera")
-
+    print(f"   ⏱️ Czas: {time.time() - now:.4f} sekund")
 
     print("  ➤ Hamilatonowski graf skierowany:")
-    if n <= 12:
-        if hamiltonian_cycle_matrix(matrix):
-            print("   ✅ Zawiera cykl Hamiltona")
-        else:
-            print("   ❌ Brak cyklu Hamiltona")
+    now = time.time()
+    if find_hamilton_cycle_undirected(matrix):
+        print("   ✅ Zawiera cykl Hamiltona")
     else:
-        print("   ⚠️ Pominięto test Hamiltona (zbyt duże n)")
+        print("   ❌ Brak cyklu Hamiltona")
+    print(f"   ⏱️ Czas: {time.time() - now:.4f} sekund")
 
     print()
 
-# Przykładowe testy
-test_graph(5, 0.25)
-test_graph(6, 0.3)
-test_graph(8, 0.9)
-test_graph(10, 0.5)
-test_graph(12, 1.0)
+if __name__ == "__main__":
+    import sys
+    import time
+    sys.setrecursionlimit(10**6)  # Zwiększenie limitu rekurencji
+    n_values = [5, 15, 25]
+    saturation = 0.5
+
+    for n in n_values:
+        test_graph(n, saturation)
+
+    print("Testy zakończone.")
