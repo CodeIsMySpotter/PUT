@@ -1,0 +1,6 @@
+moderngl
+moderngl-window
+PyGLM
+python-chess
+Pillow
+trimesh
